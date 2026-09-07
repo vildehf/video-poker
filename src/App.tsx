@@ -1,9 +1,19 @@
+import { Route, Routes } from "react-router";
+import GamePage from "./pages/GamePage";
+import RulesPage from "./pages/RulesPage";
+import PlayersPage from "./pages/PlayersPage";
+import Header from "./components/Header/Header";
 import "./App.css";
 
 export default function App() {
   return (
-    <main>
-      <h1>Video Poker</h1>
-    </main>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<GamePage />} />
+        <Route path="/regler" element={<RulesPage />} />
+        <Route path="/spillere" element={<PlayersPage />} />
+      </Routes>
+    </>
   );
 }
