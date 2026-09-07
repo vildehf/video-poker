@@ -1,22 +1,18 @@
 import Card from "../components/Card/Card";
-import type { PlayingCard } from "../types/PlayingCard";
+import createDeck from "../utils/createDeck";
 import styles from "./GamePage.module.css";
+import shuffleDeck from "../utils/shuffleDeck";
 
 export default function GamePage() {
-  const testCards: PlayingCard[] = [
-    { suit: "hearts", value: "A" },
-    { suit: "diamonds", value: "K" },
-    { suit: "clubs", value: "Q" },
-    { suit: "spades", value: "J" },
-    { suit: "hearts", value: "10" },
-  ];
+  const deck = createDeck();
+  const shuffledDeck = shuffleDeck(deck);
 
   return (
     <main>
       <h1>Video Poker</h1>
 
       <div className={styles.hand}>
-        {testCards.map((card) => (
+        {shuffledDeck.slice(0, 5).map((card) => (
           <Card key={`${card.suit}-${card.value}`} card={card} />
         ))}
       </div>
