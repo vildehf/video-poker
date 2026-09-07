@@ -1,0 +1,19 @@
+.navBar {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+  gap: 1rem;
+
+  a {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  :global(.active) {
+    font-weight: 700;
+  }
+}
