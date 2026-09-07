@@ -1,0 +1,33 @@
+.card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: 120px;
+  aspect-ratio: 2.5 / 3.5;
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 0.5rem;
+  background-color: white;
+
+  &.red {
+    color: red;
+  }
+
+  &.black {
+    color: black;
+  }
+
+  .top {
+    display: grid;
+    justify-items: start;
+
+    span {
+      line-height: 1;
+    }
+  }
+
+  .center {
+    display: grid;
+    place-items: center;
+    font-size: 3rem;
+  }
+}
