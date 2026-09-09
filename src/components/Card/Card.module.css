@@ -30,4 +30,9 @@
     place-items: center;
     font-size: 3rem;
   }
+
+  &.held {
+    outline: 3px solid gold;
+    transform: translateY(-8px);
+  }
 }
