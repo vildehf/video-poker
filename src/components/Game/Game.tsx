@@ -1,4 +1,6 @@
 import { useState } from "react";
+import CurrentBet from "../CurrentBet/CurrentBet";
+import TotalCoins from "../TotalCoins/TotalCoins";
 import type { PlayingCard } from "../../types/PlayingCard";
 import Card from "../Card/Card";
 import createDeck from "../../utils/createDeck";
@@ -52,6 +54,9 @@ export default function Game() {
 
   return (
     <>
+      <TotalCoins coins={100} />
+      <CurrentBet bet={1} />
+
       <div className={styles.hand}>
         {hand.map((card, index) => (
           <Card
