@@ -23,7 +23,31 @@ export default function Game() {
 
   function dealNewHand() {
     const newDeck = shuffleDeck(createDeck());
-    setHand(newDeck.slice(0, 5));
+
+    const availableCards = newDeck.filter(
+      (deckCard) =>
+        !hand.some(
+          (handCard) =>
+            handCard.suit === deckCard.suit &&
+            handCard.value === deckCard.value,
+        ),
+    );
+
+    let nextCardIndex = 0;
+
+    const newHand = hand.map((card, index) => {
+      if (heldCards.includes(index)) {
+        return card;
+      }
+
+      const newCard = availableCards[nextCardIndex];
+      nextCardIndex++;
+
+      return newCard;
+    });
+
+    setHand(newHand);
+    setHeldCards([]);
   }
 
   return (
