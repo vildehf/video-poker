@@ -16,6 +16,8 @@ export default function PlayersPage() {
     localStorage.setItem("players", JSON.stringify(players));
   }, [players]);
 
+  const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null);
+
   function addPlayer(formData: FormData) {
     const name = formData.get("name");
 
@@ -47,11 +49,13 @@ export default function PlayersPage() {
 
       <h2>Spillere</h2>
 
-      {players.map((players) => (
-        <p key={players.name}>
-          {players.name} - {players.coins} coins
-        </p>
+      {players.map((player) => (
+        <button key={player.name} onClick={() => setCurrentPlayer(player)}>
+          {player.name} - {player.coins} coins
+        </button>
       ))}
+
+      {currentPlayer && <p>Valgt spiller: {currentPlayer.name}</p>}
     </main>
   );
 }
