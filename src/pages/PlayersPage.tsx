@@ -16,7 +16,21 @@ export default function PlayersPage() {
     localStorage.setItem("players", JSON.stringify(players));
   }, [players]);
 
-  const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null);
+  const [currentPlayer, setCurrentPlayer] = useState<Player | null>(() => {
+    const savedPlayer = localStorage.getItem("currentPlayer");
+
+    if (savedPlayer) {
+      return JSON.parse(savedPlayer);
+    }
+
+    return null;
+  });
+
+  useEffect(() => {
+    if (currentPlayer) {
+      localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
+    }
+  }, [currentPlayer]);
 
   function addPlayer(formData: FormData) {
     const name = formData.get("name");
