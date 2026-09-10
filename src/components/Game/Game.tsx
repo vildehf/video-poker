@@ -13,7 +13,13 @@ export default function Game() {
 
   const [hand, setHand] = useState<PlayingCard[]>(shuffledDeck.slice(0, 5));
 
+  const [currentBet, setCurrentBet] = useState(1);
+
   const [heldCards, setHeldCards] = useState<number[]>([]);
+
+  function increaseBet() {
+    if (currentBet < 5) setCurrentBet(currentBet + 1);
+  }
 
   function toggleHold(index: number) {
     if (heldCards.includes(index)) {
@@ -55,7 +61,8 @@ export default function Game() {
   return (
     <>
       <TotalCoins coins={100} />
-      <CurrentBet bet={1} />
+      <CurrentBet bet={currentBet} />
+      <button onClick={increaseBet}>Øk innsats</button>
 
       <div className={styles.hand}>
         {hand.map((card, index) => (
