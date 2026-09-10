@@ -3,9 +3,11 @@ import styles from "./Card.module.css";
 
 type CardProps = {
   card: PlayingCard;
+  onClick?: () => void;
+  held?: boolean;
 };
 
-export default function Card({ card }: CardProps) {
+export default function Card({ card, onClick, held }: CardProps) {
   function getSuitSymbol() {
     if (card.suit === "hearts") return "♥";
     if (card.suit === "diamonds") return "♦";
@@ -16,7 +18,12 @@ export default function Card({ card }: CardProps) {
   const isRed = card.suit === "hearts" || card.suit === "diamonds";
 
   return (
-    <div className={`${styles.card} ${isRed ? styles.red : styles.black}`}>
+    <div
+      className={`${styles.card} ${isRed ? styles.red : styles.black} ${
+        held ? styles.held : ""
+      } `}
+      onClick={onClick}
+    >
       <div className={styles.top}>
         <span>{card.value}</span>
         <span>{getSuitSymbol()}</span>
