@@ -2,6 +2,7 @@ import { useState } from "react";
 import CurrentBet from "../CurrentBet/CurrentBet";
 import TotalCoins from "../TotalCoins/TotalCoins";
 import type { PlayingCard } from "../../types/PlayingCard";
+import type { PokerHand } from "../../types/PokerHand";
 import Card from "../Card/Card";
 import createDeck from "../../utils/createDeck";
 import shuffleDeck from "../../utils/shuffleDeck";
@@ -14,6 +15,8 @@ export default function Game() {
   const [hand, setHand] = useState<PlayingCard[]>(shuffledDeck.slice(0, 5));
 
   const [currentBet, setCurrentBet] = useState(1);
+
+  const [PokerHand] = useState<PokerHand>("Høyt kort");
 
   const [heldCards, setHeldCards] = useState<number[]>([]);
 
@@ -62,6 +65,7 @@ export default function Game() {
     <>
       <TotalCoins coins={100} />
       <CurrentBet bet={currentBet} />
+      <p>Pokerhånd: {PokerHand}</p>
       <button onClick={increaseBet}>Øk innsats</button>
 
       <div className={styles.hand}>
