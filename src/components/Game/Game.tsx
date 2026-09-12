@@ -16,7 +16,7 @@ export default function Game() {
 
   const [currentBet, setCurrentBet] = useState(1);
 
-  const [PokerHand] = useState<PokerHand>("Høyt kort");
+  const [PokerHand, setPokerHand] = useState<PokerHand>("Høyt kort");
 
   const [heldCards, setHeldCards] = useState<number[]>([]);
 
@@ -30,6 +30,39 @@ export default function Game() {
     } else {
       setHeldCards([...heldCards, index]);
     }
+  }
+
+  function hasPair(cards: PlayingCard[]) {
+    return cards.some((card, index) =>
+      cards.some(
+        (otherCard, otherIndex) =>
+          index !== otherIndex && card.value === otherCard.value,
+      ),
+    );
+  }
+
+  function hasTwoPairs(cards: PlayingCard[]) {
+    const pairValues: string[] = [];
+
+    cards.forEach((card) => {
+      const matchingCards = cards.filter(
+        (otherCard) => otherCard.value === card.value,
+      );
+
+      if (matchingCards.length === 2 && !pairValues.includes(card.value)) {
+        pairValues.push(card.value);
+      }
+    });
+    return pairValues.length === 2;
+  }
+
+  function hasThreeOfAKind(cards: PlayingCard[]) {
+    return cards.some((card) => {
+      const matchingCards = cards.filter(
+        (otherCard) => otherCard.value === card.value,
+      );
+      return matchingCards.length === 3;
+    });
   }
 
   function dealNewHand() {
@@ -59,6 +92,16 @@ export default function Game() {
 
     setHand(newHand);
     setHeldCards([]);
+
+    if (hasThreeOfAKind(newHand)) {
+      setPokerHand("Tre like");
+    } else if (hasTwoPairs(newHand)) {
+      setPokerHand("To par");
+    } else if (hasPair(newHand)) {
+      setPokerHand("Par");
+    } else {
+      setPokerHand("Høyt kort");
+    }
   }
 
   return (
