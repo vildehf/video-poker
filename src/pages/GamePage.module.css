@@ -3,3 +3,23 @@
   justify-content: center;
   gap: 1rem;
 }
+
+.gameInfo {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  p {
+    margin: 0;
+  }
+}
+
+.hand {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-block: 2rem;
+}

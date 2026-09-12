@@ -106,11 +106,12 @@ export default function Game() {
 
   return (
     <>
-      <TotalCoins coins={100} />
-      <CurrentBet bet={currentBet} />
-      <p>Pokerhånd: {PokerHand}</p>
-      <button onClick={increaseBet}>Øk innsats</button>
-
+      <div className={styles.gameInfo}>
+        <TotalCoins coins={100} />
+        <CurrentBet bet={currentBet} />
+        <p>Pokerhånd: {PokerHand}</p>
+        <button onClick={increaseBet}>Øk innsats</button>
+      </div>
       <div className={styles.hand}>
         {hand.map((card, index) => (
           <Card
