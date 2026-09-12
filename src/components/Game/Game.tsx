@@ -6,7 +6,7 @@ import type { PokerHand } from "../../types/PokerHand";
 import Card from "../Card/Card";
 import createDeck from "../../utils/createDeck";
 import shuffleDeck from "../../utils/shuffleDeck";
-import styles from "../../pages/GamePage.module.css";
+import styles from "../../pages/GamePage/GamePage.module.css";
 
 export default function Game() {
   const deck = createDeck();

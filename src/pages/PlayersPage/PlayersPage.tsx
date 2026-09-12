@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Player } from "../types/Player";
+import type { Player } from "../../types/Player";
 import styles from "./PlayersPage.module.css";
 
 export default function PlayersPage() {

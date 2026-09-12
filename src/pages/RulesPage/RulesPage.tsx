@@ -1,4 +1,4 @@
-import PayoutTable from "../components/PayoutTable/PayoutTable";
+import PayoutTable from "../../components/PayoutTable/PayoutTable";
 import styles from "./RulesPage.module.css";
 
 export default function RulesPages() {
