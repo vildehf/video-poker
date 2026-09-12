@@ -18,11 +18,13 @@ export default function Card({ card, onClick, held }: CardProps) {
   const isRed = card.suit === "hearts" || card.suit === "diamonds";
 
   return (
-    <div
+    <button
+      type="button"
       className={`${styles.card} ${isRed ? styles.red : styles.black} ${
         held ? styles.held : ""
       } `}
       onClick={onClick}
+      aria-pressed={held}
     >
       <div className={styles.top}>
         <span>{card.value}</span>
@@ -32,6 +34,6 @@ export default function Card({ card, onClick, held }: CardProps) {
       <div className={styles.center}>
         <span>{getSuitSymbol()}</span>
       </div>
-    </div>
+    </button>
   );
 }

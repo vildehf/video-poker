@@ -23,3 +23,14 @@
   flex-wrap: wrap;
   margin-block: 2rem;
 }
+
+@media (max-width: 600px) {
+  .hand {
+    gap: 0.5rem;
+  }
+
+  .gameInfo {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
