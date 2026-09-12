@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import type { Player } from "../types/Player";
+import styles from "./PlayersPage.module.css";
 
 export default function PlayersPage() {
   const [players, setPlayers] = useState<Player[]>(() => {
@@ -48,7 +49,7 @@ export default function PlayersPage() {
   }
 
   return (
-    <main>
+    <main className={styles.playersPage}>
       <h1>Spillere</h1>
       <p>Her kan spilleren velges eller opprettes.</p>
 
@@ -62,13 +63,13 @@ export default function PlayersPage() {
       </form>
 
       <h2>Spillere</h2>
-
-      {players.map((player) => (
-        <button key={player.name} onClick={() => setCurrentPlayer(player)}>
-          {player.name} - {player.coins} coins
-        </button>
-      ))}
-
+      <div className={styles.playerList}>
+        {players.map((player) => (
+          <button key={player.name} onClick={() => setCurrentPlayer(player)}>
+            {player.name} - {player.coins} coins
+          </button>
+        ))}
+      </div>
       {currentPlayer && <p>Valgt spiller: {currentPlayer.name}</p>}
     </main>
   );
