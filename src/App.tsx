@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
-import GamePage from "./pages/GamePage";
-import RulesPage from "./pages/RulesPage";
-import PlayersPage from "./pages/PlayersPage";
+import GamePage from "./pages/GamePage/GamePage";
+import RulesPage from "./pages/RulesPage/RulesPage";
+import PlayersPage from "./pages/PlayersPage/PlayersPage";
 import Header from "./components/Header/Header";
 import "./App.css";
 

@@ -1,0 +1,46 @@
+.hand {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.gameInfo {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  p {
+    margin: 0;
+  }
+}
+
+.hand {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-block: 2rem;
+}
+
+@media (max-width: 600px) {
+  .hand {
+    gap: 0.5rem;
+  }
+
+  .gameInfo {
+    display: grid;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+
+    p {
+      margin: 0;
+    }
+
+    button {
+      margin-top: 0.5rem;
+    }
+  }
+}

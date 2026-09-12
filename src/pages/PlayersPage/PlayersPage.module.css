@@ -1,0 +1,42 @@
+.playersPage {
+  display: grid;
+  justify-content: center;
+  gap: 1rem;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75;
+    align-items: center;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    input {
+      text-align: center;
+    }
+
+    button {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .playerList {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .playersPage {
+    form {
+      flex-direction: column;
+    }
+  }
+}

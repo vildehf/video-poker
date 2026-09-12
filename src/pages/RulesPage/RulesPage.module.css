@@ -1,0 +1,16 @@
+.rulesPage {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+
+  table {
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.75rem 1.5rem;
+      border: 1px solid black;
+      text-align: left;
+    }
+  }
+}
