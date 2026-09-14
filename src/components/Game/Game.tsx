@@ -15,6 +15,9 @@ export default function Game() {
   const hand = useGameStore((state) => state.hand);
   const setHand = useGameStore((state) => state.setHand);
 
+  const discardedCards = useGameStore((state) => state.hand);
+  const setDiscardedCards = useGameStore((state) => state.setDiscardedCards);
+
   useEffect(() => {
     if (hand.length === 0 && deck.length === 0) {
       startGame();
@@ -43,6 +46,12 @@ export default function Game() {
   }
 
   function dealNewHand() {
+    const newlyDiscarded = hand.filter(
+      (_, index) => !heldCards.includes(index),
+    );
+
+    setDiscardedCards([...discardedCards, ...newlyDiscarded]);
+
     let nextCardIndex = 0;
 
     const newHand = hand.map((card, index) => {
