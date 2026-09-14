@@ -15,7 +15,7 @@ export default function Game() {
   const hand = useGameStore((state) => state.hand);
   const setHand = useGameStore((state) => state.setHand);
 
-  const discardedCards = useGameStore((state) => state.hand);
+  const discardedCards = useGameStore((state) => state.discardedCards);
   const setDiscardedCards = useGameStore((state) => state.setDiscardedCards);
 
   useEffect(() => {
@@ -27,13 +27,13 @@ export default function Game() {
   const [currentBet, setCurrentBet] = useState(1);
   const [PokerHand, setPokerHand] = useState<PokerHand>("Høyt kort");
   const [heldCards, setHeldCards] = useState<number[]>([]);
+  const [hasDrawn, setHasDrawn] = useState(false);
   const currentPlayer = useGameStore((state) => state.currentPlayer);
   const setPlayerCoins = useGameStore((state) => state.setPlayerCoins);
 
   function increaseBet() {
-    if (currentBet < 5 && currentPlayer && currentPlayer.coins > 0) {
+    if (currentBet < 5) {
       setCurrentBet(currentBet + 1);
-      setPlayerCoins(currentPlayer.coins - 1);
     }
   }
 
@@ -50,6 +50,16 @@ export default function Game() {
   }
 
   function dealNewHand() {
+    if (hasDrawn) {
+      return;
+    }
+
+    if (!currentPlayer || currentPlayer.coins < currentBet) {
+      return;
+    }
+
+    setPlayerCoins(currentPlayer.coins - currentBet);
+
     const newlyDiscarded = hand.filter(
       (_, index) => !heldCards.includes(index),
     );
@@ -64,6 +74,10 @@ export default function Game() {
       }
 
       const newCard = deck[nextCardIndex];
+      if (!newCard) {
+        return card;
+      }
+
       nextCardIndex++;
 
       return newCard;
@@ -74,6 +88,14 @@ export default function Game() {
     setHeldCards([]);
 
     setPokerHand(checkPokerHand(newHand));
+    setHasDrawn(true);
+  }
+
+  function startNewRound() {
+    startGame();
+    setHeldCards([]);
+    setHasDrawn(false);
+    setPokerHand("Høyt kort");
   }
 
   return (
@@ -96,6 +118,7 @@ export default function Game() {
       </div>
 
       <button onClick={dealNewHand}>Del ut nye kort</button>
+      <button onClick={startNewRound}>Ny runde</button>
     </>
   );
 }
