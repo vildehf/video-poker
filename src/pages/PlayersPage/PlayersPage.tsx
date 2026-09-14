@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import type { Player } from "../../types/Player";
 import styles from "./PlayersPage.module.css";
 
+/**
+ * Viser siden for å opprette og velge spillere.
+ * @returns spillersiden
+ */
 export default function PlayersPage() {
   const [players, setPlayers] = useState<Player[]>(() => {
     const savedPlayers = localStorage.getItem("players");
@@ -33,6 +37,10 @@ export default function PlayersPage() {
     }
   }, [currentPlayer]);
 
+  /**
+   * Oppretter en ny spiller med 100 coins.
+   * @param formData data fra skjemaet med spillerens navn.
+   */
   function addPlayer(formData: FormData) {
     const name = formData.get("name");
 

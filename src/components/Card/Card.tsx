@@ -7,6 +7,13 @@ type CardProps = {
   held?: boolean;
 };
 
+/**
+ * Viser et spillkort med verdi og symbol.
+ * @param card kortet skal vises
+ * @param onClick funksjon som kjøres når kortet trykkes på
+ * @param held viser om kortet er valgt til HOLD
+ * @returns et spillkort
+ */
 export default function Card({ card, onClick, held }: CardProps) {
   function getSuitSymbol() {
     if (card.suit === "hearts") return "♥";

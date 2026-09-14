@@ -1,3 +1,7 @@
+/**
+ * Viser pokerhendene og premiene for hver hånd.
+ * @returns tabellen med pokerhender og premier
+ */
 export default function PayoutTable() {
   return (
     <table>
