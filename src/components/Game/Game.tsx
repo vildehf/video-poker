@@ -7,6 +7,7 @@ import Card from "../Card/Card";
 import createDeck from "../../utils/createDeck";
 import shuffleDeck from "../../utils/shuffleDeck";
 import styles from "../../pages/GamePage/GamePage.module.css";
+import { useGameStore } from "../../store/useGameStore";
 
 export default function Game() {
   const deck = createDeck();
@@ -15,6 +16,7 @@ export default function Game() {
   const [currentBet, setCurrentBet] = useState(1);
   const [PokerHand, setPokerHand] = useState<PokerHand>("Høyt kort");
   const [heldCards, setHeldCards] = useState<number[]>([]);
+  const currentPlayer = useGameStore((state) => state.currentPlayer);
 
   function increaseBet() {
     if (currentBet < 5) setCurrentBet(currentBet + 1);
@@ -107,7 +109,7 @@ export default function Game() {
   return (
     <>
       <div className={styles.gameInfo}>
-        <TotalCoins coins={100} />
+        <TotalCoins coins={currentPlayer?.coins ?? 0} />
         <CurrentBet bet={currentBet} />
         <p>Pokerhånd: {PokerHand}</p>
         <button onClick={increaseBet}>Øk innsats</button>

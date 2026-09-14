@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { Player } from "../../types/Player";
 import styles from "./PlayersPage.module.css";
+import { useGameStore } from "../../store/useGameStore";
 
 /**
  * Viser siden for å opprette og velge spillere.
@@ -21,21 +22,8 @@ export default function PlayersPage() {
     localStorage.setItem("players", JSON.stringify(players));
   }, [players]);
 
-  const [currentPlayer, setCurrentPlayer] = useState<Player | null>(() => {
-    const savedPlayer = localStorage.getItem("currentPlayer");
-
-    if (savedPlayer) {
-      return JSON.parse(savedPlayer);
-    }
-
-    return null;
-  });
-
-  useEffect(() => {
-    if (currentPlayer) {
-      localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
-    }
-  }, [currentPlayer]);
+  const currentPlayer = useGameStore((state) => state.currentPlayer);
+  const setCurrentPlayer = useGameStore((state) => state.setCurrentPlayer);
 
   /**
    * Oppretter en ny spiller med 100 coins.
