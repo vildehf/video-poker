@@ -1,23 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CurrentBet from "../CurrentBet/CurrentBet";
 import TotalCoins from "../TotalCoins/TotalCoins";
 import type { PokerHand } from "../../types/PokerHand";
 import Card from "../Card/Card";
-import createDeck from "../../utils/createDeck";
-import shuffleDeck from "../../utils/shuffleDeck";
 import styles from "../../pages/GamePage/GamePage.module.css";
 import { useGameStore } from "../../store/useGameStore";
 import checkPokerHand from "../../utils/checkPokerHand";
 
 export default function Game() {
-  const deck = createDeck();
-  const shuffledDeck = shuffleDeck(deck);
+  const deck = useGameStore((state) => state.deck);
+  const setDeck = useGameStore((state) => state.setDeck);
+  const startGame = useGameStore((state) => state.startGame);
+
   const hand = useGameStore((state) => state.hand);
   const setHand = useGameStore((state) => state.setHand);
 
-  if (hand.length === 0) {
-    setHand(shuffledDeck.slice(0, 5));
-  }
+  useEffect(() => {
+    if (hand.length === 0 && deck.length === 0) {
+      startGame();
+    }
+  }, [hand.length, deck.length, startGame]);
+
   const [currentBet, setCurrentBet] = useState(1);
   const [PokerHand, setPokerHand] = useState<PokerHand>("Høyt kort");
   const [heldCards, setHeldCards] = useState<number[]>([]);
@@ -40,17 +43,6 @@ export default function Game() {
   }
 
   function dealNewHand() {
-    const newDeck = shuffleDeck(createDeck());
-
-    const availableCards = newDeck.filter(
-      (deckCard) =>
-        !hand.some(
-          (handCard) =>
-            handCard.suit === deckCard.suit &&
-            handCard.value === deckCard.value,
-        ),
-    );
-
     let nextCardIndex = 0;
 
     const newHand = hand.map((card, index) => {
@@ -58,13 +50,14 @@ export default function Game() {
         return card;
       }
 
-      const newCard = availableCards[nextCardIndex];
+      const newCard = deck[nextCardIndex];
       nextCardIndex++;
 
       return newCard;
     });
 
     setHand(newHand);
+    setDeck(deck.slice(nextCardIndex));
     setHeldCards([]);
 
     setPokerHand(checkPokerHand(newHand));
