@@ -18,12 +18,24 @@ export default function PlayersPage() {
     return [];
   });
 
+  const currentPlayer = useGameStore((state) => state.currentPlayer);
+  const setCurrentPlayer = useGameStore((state) => state.setCurrentPlayer);
+
   useEffect(() => {
     localStorage.setItem("players", JSON.stringify(players));
   }, [players]);
 
-  const currentPlayer = useGameStore((state) => state.currentPlayer);
-  const setCurrentPlayer = useGameStore((state) => state.setCurrentPlayer);
+  useEffect(() => {
+    if (!currentPlayer) {
+      return;
+    }
+
+    setPlayers((players) =>
+      players.map((player) =>
+        player.name === currentPlayer.name ? currentPlayer : player,
+      ),
+    );
+  }, [currentPlayer]);
 
   /**
    * Oppretter en ny spiller med 100 coins.
@@ -60,8 +72,11 @@ export default function PlayersPage() {
 
       <h2>Spillere</h2>
       <div className={styles.playerList}>
-        {players.map((player) => (
-          <button key={player.name} onClick={() => setCurrentPlayer(player)}>
+        {players.map((player, index) => (
+          <button
+            key={`${player.name}-${index}`}
+            onClick={() => setCurrentPlayer(player)}
+          >
             {player.name} - {player.coins} coins
           </button>
         ))}

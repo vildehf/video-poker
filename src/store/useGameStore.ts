@@ -8,6 +8,7 @@ import shuffleDeck from "../utils/shuffleDeck";
 type GameStore = {
   currentPlayer: Player | null;
   setCurrentPlayer: (player: Player) => void;
+  setPlayerCoins: (coins: number) => void;
 
   hand: PlayingCard[];
   setHand: (hand: PlayingCard[]) => void;
@@ -34,6 +35,13 @@ export const useGameStore = create<GameStore>()(
 
       setCurrentPlayer: (player) => {
         set({ currentPlayer: player });
+      },
+      setPlayerCoins: (coins) => {
+        set((state) => ({
+          currentPlayer: state.currentPlayer
+            ? { ...state.currentPlayer, coins: coins }
+            : null,
+        }));
       },
 
       setHand: (hand) => {

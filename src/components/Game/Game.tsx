@@ -28,9 +28,13 @@ export default function Game() {
   const [PokerHand, setPokerHand] = useState<PokerHand>("Høyt kort");
   const [heldCards, setHeldCards] = useState<number[]>([]);
   const currentPlayer = useGameStore((state) => state.currentPlayer);
+  const setPlayerCoins = useGameStore((state) => state.setPlayerCoins);
 
   function increaseBet() {
-    if (currentBet < 5) setCurrentBet(currentBet + 1);
+    if (currentBet < 5 && currentPlayer && currentPlayer.coins > 0) {
+      setCurrentBet(currentBet + 1);
+      setPlayerCoins(currentPlayer.coins - 1);
+    }
   }
 
   /**
