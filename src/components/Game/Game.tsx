@@ -11,19 +11,19 @@ import styles from "../../pages/GamePage/GamePage.module.css";
 export default function Game() {
   const deck = createDeck();
   const shuffledDeck = shuffleDeck(deck);
-
   const [hand, setHand] = useState<PlayingCard[]>(shuffledDeck.slice(0, 5));
-
   const [currentBet, setCurrentBet] = useState(1);
-
   const [PokerHand, setPokerHand] = useState<PokerHand>("Høyt kort");
-
   const [heldCards, setHeldCards] = useState<number[]>([]);
 
   function increaseBet() {
     if (currentBet < 5) setCurrentBet(currentBet + 1);
   }
 
+  /**
+   * Legger til eller fjerner et kort fra HOLD.
+   * @param index plasseringen til kortet i hånden
+   */
   function toggleHold(index: number) {
     if (heldCards.includes(index)) {
       setHeldCards(heldCards.filter((heldIndex) => heldIndex !== index));

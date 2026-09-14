@@ -18,6 +18,10 @@ const values: CardValue[] = [
   "A",
 ];
 
+/**
+ * Lager en komplett kortstokk med 52 kort
+ * @returns en array med 52 PlayingCard-kort
+ */
 export default function createDeck(): PlayingCard[] {
   const deck: PlayingCard[] = [];
 
