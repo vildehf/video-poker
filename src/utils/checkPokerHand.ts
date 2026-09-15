@@ -1,6 +1,11 @@
 import type { PlayingCard } from "../types/PlayingCard";
 import type { PokerHand } from "../types/PokerHand";
 
+/**
+ * Sjekker om hånden inneholder et par.
+ * @param cards kortene som skal sjekkes
+ * @returns true hvis hånden inneholder et par
+ */
 function hasPair(cards: PlayingCard[]) {
   return cards.some((card, index) =>
     cards.some(
@@ -10,6 +15,11 @@ function hasPair(cards: PlayingCard[]) {
   );
 }
 
+/**
+ * Sjekker om hånden inneholder to par.
+ * @param cards kortene som skal sjekkes
+ * @returns true hvis hånden inneholder et par
+ */
 function hasTwoPairs(cards: PlayingCard[]) {
   const pairValues: string[] = [];
 
@@ -26,6 +36,11 @@ function hasTwoPairs(cards: PlayingCard[]) {
   return pairValues.length === 2;
 }
 
+/**
+ * Sjekker om hånden inneholder tre kort med samme verdi.
+ * @param cards kortene som skal sjekkes
+ * @returns true hvis hånden inneholder tre like
+ */
 function hasThreeOfAKind(cards: PlayingCard[]) {
   return cards.some((card) => {
     const matchingCards = cards.filter(
@@ -36,6 +51,11 @@ function hasThreeOfAKind(cards: PlayingCard[]) {
   });
 }
 
+/**
+ * Sjekker om hånden inneholder fire kort med samme verdi.
+ * @param cards kortene som skal sjekkes
+ * @returns true hvis hånden inneholder fire like
+ */
 function hasFourOfAKind(cards: PlayingCard[]) {
   return cards.some((card) => {
     const matchingCards = cards.filter(
@@ -46,10 +66,20 @@ function hasFourOfAKind(cards: PlayingCard[]) {
   });
 }
 
+/**
+ * Sjekker om alle kortene har samme sort.
+ * @param cards kortene som skal sjekkes
+ * @returns true hvis hånden er en flush
+ */
 function hasFlush(cards: PlayingCard[]) {
   return cards.every((card) => card.suit === cards[0].suit);
 }
 
+/**
+ * Sjekker om hånden inneholder tre like og et par.
+ * @param cards kortene som skal sjekkes
+ * @returns true hvis hånden er fullt hus
+ */
 function hasFullHouse(cards: PlayingCard[]) {
   const amounts: number[] = [];
 
@@ -82,6 +112,11 @@ const cardValues = [
   "A",
 ];
 
+/**
+ * Sjekker om kortene har fem verdier i rekkefølge.
+ * @param cards kortene som skal sjekkes
+ * @returns true hvis hånden er en straight
+ */
 function hasStraight(cards: PlayingCard[]) {
   const positions = cards.map((card) => cardValues.indexOf(card.value));
 
@@ -103,10 +138,20 @@ function hasStraight(cards: PlayingCard[]) {
   );
 }
 
+/**
+ * Sjekker om hånden er både straight og flush.
+ * @param cards kortene som skal sjekkes
+ * @returns true hvis hånden er en straight flush
+ */
 function hasStraightFlush(cards: PlayingCard[]) {
   return hasStraight(cards) && hasFlush(cards);
 }
 
+/**
+ * Sjekker om hånden er en royal flush.
+ * @param cards kortene som skal sjekkes
+ * @returns true hvis hånden er en royal flush
+ */
 function hasRoyalFlush(cards: PlayingCard[]) {
   const royalValues = ["10", "J", "Q", "K", "A"];
 

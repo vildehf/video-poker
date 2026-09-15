@@ -6,6 +6,7 @@ type CardProps = {
   onClick?: () => void;
   held?: boolean;
   back?: boolean;
+  disabled?: boolean;
 };
 
 /**
@@ -13,9 +14,17 @@ type CardProps = {
  * @param card kortet skal vises
  * @param onClick funksjon som kjøres når kortet trykkes på
  * @param held viser om kortet er valgt til HOLD
+ * @param back viser baksiden av kortet
+ * @param disabled bestemmer om kortet kan trykkes på
  * @returns et spillkort
  */
-export default function Card({ card, onClick, held, back }: CardProps) {
+export default function Card({
+  card,
+  onClick,
+  held,
+  back,
+  disabled,
+}: CardProps) {
   if (back) {
     return (
       <button
@@ -47,6 +56,7 @@ export default function Card({ card, onClick, held, back }: CardProps) {
         held ? styles.held : ""
       } `}
       onClick={onClick}
+      disabled={disabled}
       aria-pressed={held}
     >
       <div className={styles.top}>

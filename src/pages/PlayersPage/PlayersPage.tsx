@@ -49,7 +49,7 @@ export default function PlayersPage() {
     }
 
     const newPlayer: Player = {
-      name: name,
+      name: name.trim(),
       coins: 100,
     };
 
