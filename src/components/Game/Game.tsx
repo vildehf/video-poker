@@ -115,6 +115,7 @@ export default function Game() {
     setHeldCards([]);
     setHasDrawn(false);
     setPokerHand("Høyt kort");
+    setCurrentBet(1);
   }
 
   return (
