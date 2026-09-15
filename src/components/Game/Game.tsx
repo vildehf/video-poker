@@ -1,23 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CurrentBet from "../CurrentBet/CurrentBet";
 import TotalCoins from "../TotalCoins/TotalCoins";
-import type { PlayingCard } from "../../types/PlayingCard";
 import type { PokerHand } from "../../types/PokerHand";
 import Card from "../Card/Card";
-import createDeck from "../../utils/createDeck";
-import shuffleDeck from "../../utils/shuffleDeck";
 import styles from "../../pages/GamePage/GamePage.module.css";
+import { useGameStore } from "../../store/useGameStore";
+import checkPokerHand from "../../utils/checkPokerHand";
 
 export default function Game() {
-  const deck = createDeck();
-  const shuffledDeck = shuffleDeck(deck);
-  const [hand, setHand] = useState<PlayingCard[]>(shuffledDeck.slice(0, 5));
-  const [currentBet, setCurrentBet] = useState(1);
+  const deck = useGameStore((state) => state.deck);
+  const setDeck = useGameStore((state) => state.setDeck);
+  const startGame = useGameStore((state) => state.startGame);
+
+  const hand = useGameStore((state) => state.hand);
+  const setHand = useGameStore((state) => state.setHand);
+
+  const discardedCards = useGameStore((state) => state.discardedCards);
+  const setDiscardedCards = useGameStore((state) => state.setDiscardedCards);
+
+  useEffect(() => {
+    if (hand.length === 0 && deck.length === 0) {
+      startGame();
+    }
+  }, [hand.length, deck.length, startGame]);
+
+  const currentBet = useGameStore((state) => state.currentBet);
+  const setCurrentBet = useGameStore((state) => state.setCurrentBet);
   const [PokerHand, setPokerHand] = useState<PokerHand>("Høyt kort");
-  const [heldCards, setHeldCards] = useState<number[]>([]);
+  const heldCards = useGameStore((state) => state.heldCards);
+  const setHeldCards = useGameStore((state) => state.setHeldCards);
+  const hasDrawn = useGameStore((state) => state.hasDrawn);
+  const setHasDrawn = useGameStore((state) => state.setHasDrawn);
+  const currentPlayer = useGameStore((state) => state.currentPlayer);
+  const setPlayerCoins = useGameStore((state) => state.setPlayerCoins);
 
   function increaseBet() {
-    if (currentBet < 5) setCurrentBet(currentBet + 1);
+    if (currentBet < 5) {
+      setCurrentBet(currentBet + 1);
+    }
+  }
+
+  /**
+   * Finner premien for en pokerhånd.
+   * @param hand pokerhånden som skal sjekkes
+   * @returns antall ganger innsatsen spilleren vinner
+   */
+  function getPayout(hand: PokerHand) {
+    if (hand === "Par") return 2;
+    if (hand === "To par") return 3;
+    if (hand === "Tre like") return 4;
+
+    return 0;
   }
 
   /**
@@ -32,50 +65,20 @@ export default function Game() {
     }
   }
 
-  function hasPair(cards: PlayingCard[]) {
-    return cards.some((card, index) =>
-      cards.some(
-        (otherCard, otherIndex) =>
-          index !== otherIndex && card.value === otherCard.value,
-      ),
-    );
-  }
-
-  function hasTwoPairs(cards: PlayingCard[]) {
-    const pairValues: string[] = [];
-
-    cards.forEach((card) => {
-      const matchingCards = cards.filter(
-        (otherCard) => otherCard.value === card.value,
-      );
-
-      if (matchingCards.length === 2 && !pairValues.includes(card.value)) {
-        pairValues.push(card.value);
-      }
-    });
-    return pairValues.length === 2;
-  }
-
-  function hasThreeOfAKind(cards: PlayingCard[]) {
-    return cards.some((card) => {
-      const matchingCards = cards.filter(
-        (otherCard) => otherCard.value === card.value,
-      );
-      return matchingCards.length === 3;
-    });
-  }
-
   function dealNewHand() {
-    const newDeck = shuffleDeck(createDeck());
+    if (hasDrawn) {
+      return;
+    }
 
-    const availableCards = newDeck.filter(
-      (deckCard) =>
-        !hand.some(
-          (handCard) =>
-            handCard.suit === deckCard.suit &&
-            handCard.value === deckCard.value,
-        ),
+    if (!currentPlayer || currentPlayer.coins < currentBet) {
+      return;
+    }
+
+    const newlyDiscarded = hand.filter(
+      (_, index) => !heldCards.includes(index),
     );
+
+    setDiscardedCards([...discardedCards, ...newlyDiscarded]);
 
     let nextCardIndex = 0;
 
@@ -84,30 +87,41 @@ export default function Game() {
         return card;
       }
 
-      const newCard = availableCards[nextCardIndex];
+      const newCard = deck[nextCardIndex];
+      if (!newCard) {
+        return card;
+      }
+
       nextCardIndex++;
 
       return newCard;
     });
 
     setHand(newHand);
+    setDeck(deck.slice(nextCardIndex));
     setHeldCards([]);
 
-    if (hasThreeOfAKind(newHand)) {
-      setPokerHand("Tre like");
-    } else if (hasTwoPairs(newHand)) {
-      setPokerHand("To par");
-    } else if (hasPair(newHand)) {
-      setPokerHand("Par");
-    } else {
-      setPokerHand("Høyt kort");
-    }
+    const newPokerHand = checkPokerHand(newHand);
+    setPokerHand(newPokerHand);
+
+    const payout = getPayout(newPokerHand) * currentBet;
+    setPlayerCoins(currentPlayer.coins - currentBet + payout);
+
+    setHasDrawn(true);
+  }
+
+  function startNewRound() {
+    startGame();
+    setHeldCards([]);
+    setHasDrawn(false);
+    setPokerHand("Høyt kort");
+    setCurrentBet(1);
   }
 
   return (
     <>
       <div className={styles.gameInfo}>
-        <TotalCoins coins={100} />
+        <TotalCoins coins={currentPlayer?.coins ?? 0} />
         <CurrentBet bet={currentBet} />
         <p>Pokerhånd: {PokerHand}</p>
         <button onClick={increaseBet}>Øk innsats</button>
@@ -124,6 +138,7 @@ export default function Game() {
       </div>
 
       <button onClick={dealNewHand}>Del ut nye kort</button>
+      <button onClick={startNewRound}>Ny runde</button>
     </>
   );
 }

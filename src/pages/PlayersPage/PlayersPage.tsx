@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { Player } from "../../types/Player";
 import styles from "./PlayersPage.module.css";
+import { useGameStore } from "../../store/useGameStore";
 
 /**
  * Viser siden for å opprette og velge spillere.
@@ -17,24 +18,23 @@ export default function PlayersPage() {
     return [];
   });
 
+  const currentPlayer = useGameStore((state) => state.currentPlayer);
+  const setCurrentPlayer = useGameStore((state) => state.setCurrentPlayer);
+
   useEffect(() => {
     localStorage.setItem("players", JSON.stringify(players));
   }, [players]);
 
-  const [currentPlayer, setCurrentPlayer] = useState<Player | null>(() => {
-    const savedPlayer = localStorage.getItem("currentPlayer");
-
-    if (savedPlayer) {
-      return JSON.parse(savedPlayer);
-    }
-
-    return null;
-  });
-
   useEffect(() => {
-    if (currentPlayer) {
-      localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
+    if (!currentPlayer) {
+      return;
     }
+
+    setPlayers((players) =>
+      players.map((player) =>
+        player.name === currentPlayer.name ? currentPlayer : player,
+      ),
+    );
   }, [currentPlayer]);
 
   /**
@@ -72,8 +72,11 @@ export default function PlayersPage() {
 
       <h2>Spillere</h2>
       <div className={styles.playerList}>
-        {players.map((player) => (
-          <button key={player.name} onClick={() => setCurrentPlayer(player)}>
+        {players.map((player, index) => (
+          <button
+            key={`${player.name}-${index}`}
+            onClick={() => setCurrentPlayer(player)}
+          >
             {player.name} - {player.coins} coins
           </button>
         ))}
