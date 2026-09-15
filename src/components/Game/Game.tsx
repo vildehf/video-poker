@@ -35,6 +35,9 @@ export default function Game() {
   const currentPlayer = useGameStore((state) => state.currentPlayer);
   const setPlayerCoins = useGameStore((state) => state.setPlayerCoins);
 
+  /**
+   * Øker innsatsen med 1 så lenge innsatsen er mindre enn 5.
+   */
   function increaseBet() {
     if (currentBet < 5) {
       setCurrentBet(currentBet + 1);
@@ -72,6 +75,9 @@ export default function Game() {
     }
   }
 
+  /**
+   * Bytter ut kortene som ikke er valgt til HOLD og beregner pokerhånd og premie.
+   */
   function dealNewHand() {
     if (hasDrawn) {
       return;
@@ -117,6 +123,9 @@ export default function Game() {
     setHasDrawn(true);
   }
 
+  /**
+   * Starter en ny runde og nullstiller valg og innsats for runden.
+   */
   function startNewRound() {
     startGame();
     setHeldCards([]);
@@ -144,11 +153,17 @@ export default function Game() {
             card={card}
             onClick={() => toggleHold(index)}
             held={heldCards.includes(index)}
+            disabled={hasDrawn}
           />
         ))}
       </div>
 
-      <button onClick={dealNewHand} disabled={hasDrawn}>
+      <button
+        onClick={dealNewHand}
+        disabled={
+          hasDrawn || !currentPlayer || currentPlayer.coins < currentBet
+        }
+      >
         Del ut nye kort
       </button>
       <button onClick={startNewRound}>Ny runde</button>

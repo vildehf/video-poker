@@ -90,6 +90,9 @@ export const useGameStore = create<GameStore>()(
         set({ pokerHand: hand });
       },
 
+      /**
+       * Lager og stokker en ny kortstokk og deler ut fem kort.
+       */
       startGame: () => {
         const shuffledDeck = shuffleDeck(createDeck());
 
