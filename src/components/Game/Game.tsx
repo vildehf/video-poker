@@ -38,6 +38,19 @@ export default function Game() {
   }
 
   /**
+   * Finner premien for en pokerhånd.
+   * @param hand pokerhånden som skal sjekkes
+   * @returns antall ganger innsatsen spilleren vinner
+   */
+  function getPayout(hand: PokerHand) {
+    if (hand === "Par") return 2;
+    if (hand === "To par") return 3;
+    if (hand === "Tre like") return 4;
+
+    return 0;
+  }
+
+  /**
    * Legger til eller fjerner et kort fra HOLD.
    * @param index plasseringen til kortet i hånden
    */
@@ -57,8 +70,6 @@ export default function Game() {
     if (!currentPlayer || currentPlayer.coins < currentBet) {
       return;
     }
-
-    setPlayerCoins(currentPlayer.coins - currentBet);
 
     const newlyDiscarded = hand.filter(
       (_, index) => !heldCards.includes(index),
@@ -87,7 +98,12 @@ export default function Game() {
     setDeck(deck.slice(nextCardIndex));
     setHeldCards([]);
 
-    setPokerHand(checkPokerHand(newHand));
+    const newPokerHand = checkPokerHand(newHand);
+    setPokerHand(newPokerHand);
+
+    const payout = getPayout(newPokerHand) * currentBet;
+    setPlayerCoins(currentPlayer.coins - currentBet + payout);
+
     setHasDrawn(true);
   }
 
