@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 import type { PlayingCard } from "../types/PlayingCard";
 import createDeck from "../utils/createDeck";
 import shuffleDeck from "../utils/shuffleDeck";
+import type { PokerHand } from "../types/PokerHand";
 
 type GameStore = {
   currentPlayer: Player | null;
@@ -29,6 +30,9 @@ type GameStore = {
 
   hasDrawn: boolean;
   setHasDrawn: (hasDrawn: boolean) => void;
+
+  pokerHand: PokerHand;
+  setPokerHand: (hand: PokerHand) => void;
 };
 
 /**
@@ -45,6 +49,7 @@ export const useGameStore = create<GameStore>()(
       heldCards: [],
 
       hasDrawn: false,
+      pokerHand: "Høyt kort",
 
       setCurrentPlayer: (player) => {
         set({ currentPlayer: player });
@@ -79,6 +84,10 @@ export const useGameStore = create<GameStore>()(
 
       setHasDrawn: (hasDrawn) => {
         set({ hasDrawn: hasDrawn });
+      },
+
+      setPokerHand: (hand) => {
+        set({ pokerHand: hand });
       },
 
       startGame: () => {
