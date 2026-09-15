@@ -24,10 +24,13 @@ export default function Game() {
     }
   }, [hand.length, deck.length, startGame]);
 
-  const [currentBet, setCurrentBet] = useState(1);
+  const currentBet = useGameStore((state) => state.currentBet);
+  const setCurrentBet = useGameStore((state) => state.setCurrentBet);
   const [PokerHand, setPokerHand] = useState<PokerHand>("Høyt kort");
-  const [heldCards, setHeldCards] = useState<number[]>([]);
-  const [hasDrawn, setHasDrawn] = useState(false);
+  const heldCards = useGameStore((state) => state.heldCards);
+  const setHeldCards = useGameStore((state) => state.setHeldCards);
+  const hasDrawn = useGameStore((state) => state.hasDrawn);
+  const setHasDrawn = useGameStore((state) => state.setHasDrawn);
   const currentPlayer = useGameStore((state) => state.currentPlayer);
   const setPlayerCoins = useGameStore((state) => state.setPlayerCoins);
 

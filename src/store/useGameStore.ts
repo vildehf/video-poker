@@ -20,6 +20,15 @@ type GameStore = {
   setDiscardedCards: (cards: PlayingCard[]) => void;
 
   startGame: () => void;
+
+  currentBet: number;
+  setCurrentBet: (bet: number) => void;
+
+  heldCards: number[];
+  setHeldCards: (cards: number[]) => void;
+
+  hasDrawn: boolean;
+  setHasDrawn: (hasDrawn: boolean) => void;
 };
 
 /**
@@ -32,6 +41,10 @@ export const useGameStore = create<GameStore>()(
       hand: [],
       deck: [],
       discardedCards: [],
+      currentBet: 1,
+      heldCards: [],
+
+      hasDrawn: false,
 
       setCurrentPlayer: (player) => {
         set({ currentPlayer: player });
@@ -54,6 +67,18 @@ export const useGameStore = create<GameStore>()(
 
       setDiscardedCards: (cards) => {
         set({ discardedCards: cards });
+      },
+
+      setCurrentBet: (bet) => {
+        set({ currentBet: bet });
+      },
+
+      setHeldCards: (cards) => {
+        set({ heldCards: cards });
+      },
+
+      setHasDrawn: (hasDrawn) => {
+        set({ hasDrawn: hasDrawn });
       },
 
       startGame: () => {
