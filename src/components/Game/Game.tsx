@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import CurrentBet from "../CurrentBet/CurrentBet";
 import TotalCoins from "../TotalCoins/TotalCoins";
 import type { PokerHand } from "../../types/PokerHand";
@@ -26,7 +26,8 @@ export default function Game() {
 
   const currentBet = useGameStore((state) => state.currentBet);
   const setCurrentBet = useGameStore((state) => state.setCurrentBet);
-  const [PokerHand, setPokerHand] = useState<PokerHand>("Høyt kort");
+  const pokerHand = useGameStore((state) => state.pokerHand);
+  const setPokerHand = useGameStore((state) => state.setPokerHand);
   const heldCards = useGameStore((state) => state.heldCards);
   const setHeldCards = useGameStore((state) => state.setHeldCards);
   const hasDrawn = useGameStore((state) => state.hasDrawn);
@@ -129,7 +130,7 @@ export default function Game() {
       <div className={styles.gameInfo}>
         <TotalCoins coins={currentPlayer?.coins ?? 0} />
         <CurrentBet bet={currentBet} />
-        <p>Pokerhånd: {PokerHand}</p>
+        <p>Pokerhånd: {pokerHand}</p>
         <button onClick={increaseBet}>Øk innsats</button>
       </div>
       <div className={styles.hand}>
