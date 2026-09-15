@@ -46,9 +46,15 @@ export default function Game() {
    * @returns antall ganger innsatsen spilleren vinner
    */
   function getPayout(hand: PokerHand) {
-    if (hand === "Par") return 2;
-    if (hand === "To par") return 3;
+    if (hand === "Royal Flush") return 10;
+    if (hand === "Straight Flush") return 9;
+    if (hand === "Fire like") return 8;
+    if (hand === "Fullt hus") return 7;
+    if (hand === "Flush") return 6;
+    if (hand === "Straight") return 5;
     if (hand === "Tre like") return 4;
+    if (hand === "To par") return 3;
+    if (hand === "Par") return 2;
 
     return 0;
   }
