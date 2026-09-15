@@ -131,7 +131,9 @@ export default function Game() {
         <TotalCoins coins={currentPlayer?.coins ?? 0} />
         <CurrentBet bet={currentBet} />
         <p>Pokerhånd: {pokerHand}</p>
-        <button onClick={increaseBet}>Øk innsats</button>
+        <button onClick={increaseBet} disabled={currentBet >= 5}>
+          Øk innsats
+        </button>
       </div>
       <div className={styles.hand}>
         <Card back />
@@ -146,7 +148,9 @@ export default function Game() {
         ))}
       </div>
 
-      <button onClick={dealNewHand}>Del ut nye kort</button>
+      <button onClick={dealNewHand} disabled={hasDrawn}>
+        Del ut nye kort
+      </button>
       <button onClick={startNewRound}>Ny runde</button>
     </>
   );

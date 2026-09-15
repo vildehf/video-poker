@@ -1,9 +1,3 @@
-.hand {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
 .gameInfo {
   display: flex;
   gap: 1rem;
