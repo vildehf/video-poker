@@ -133,6 +133,8 @@ export default function Game() {
         <button onClick={increaseBet}>Øk innsats</button>
       </div>
       <div className={styles.hand}>
+        <Card back />
+
         {hand.map((card, index) => (
           <Card
             key={`${card.suit}-${card.value}`}
