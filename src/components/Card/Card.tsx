@@ -2,9 +2,10 @@ import type { PlayingCard } from "../../types/PlayingCard";
 import styles from "./Card.module.css";
 
 type CardProps = {
-  card: PlayingCard;
+  card?: PlayingCard;
   onClick?: () => void;
   held?: boolean;
+  back?: boolean;
 };
 
 /**
@@ -14,8 +15,23 @@ type CardProps = {
  * @param held viser om kortet er valgt til HOLD
  * @returns et spillkort
  */
-export default function Card({ card, onClick, held }: CardProps) {
-  function getSuitSymbol() {
+export default function Card({ card, onClick, held, back }: CardProps) {
+  if (back) {
+    return (
+      <button
+        type="button"
+        className={`${styles.card} ${styles.back}`}
+        disabled
+        aria-label="Kortstokk"
+      />
+    );
+  }
+
+  if (!card) {
+    return null;
+  }
+
+  function getSuitSymbol(card: PlayingCard) {
     if (card.suit === "hearts") return "♥";
     if (card.suit === "diamonds") return "♦";
     if (card.suit === "clubs") return "♣";
@@ -35,11 +51,11 @@ export default function Card({ card, onClick, held }: CardProps) {
     >
       <div className={styles.top}>
         <span>{card.value}</span>
-        <span>{getSuitSymbol()}</span>
+        <span>{getSuitSymbol(card)}</span>
       </div>
 
       <div className={styles.center}>
-        <span>{getSuitSymbol()}</span>
+        <span>{getSuitSymbol(card)}</span>
       </div>
     </button>
   );
