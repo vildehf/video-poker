@@ -144,21 +144,27 @@ export default function Game() {
           Øk innsats
         </button>
       </div>
-      <div className={styles.hand}>
-        <Card back />
 
-        {hand.map((card, index) => (
-          <Card
-            key={`${card.suit}-${card.value}`}
-            card={card}
-            onClick={() => toggleHold(index)}
-            held={heldCards.includes(index)}
-            disabled={hasDrawn}
-          />
-        ))}
+      <div className={styles.gameArea}>
+        <div className={styles.deck}>
+          <Card back />
+        </div>
+
+        <div className={styles.hand}>
+          {hand.map((card, index) => (
+            <Card
+              key={`${card.suit}-${card.value}`}
+              card={card}
+              onClick={() => toggleHold(index)}
+              held={heldCards.includes(index)}
+              disabled={hasDrawn}
+            />
+          ))}
+        </div>
       </div>
 
       <button
+        className={styles.gameButton}
         onClick={dealNewHand}
         disabled={
           hasDrawn || !currentPlayer || currentPlayer.coins < currentBet
@@ -166,7 +172,9 @@ export default function Game() {
       >
         Del ut nye kort
       </button>
-      <button onClick={startNewRound}>Ny runde</button>
+      <button className={styles.gameButton} onClick={startNewRound}>
+        Ny runde
+      </button>
     </>
   );
 }

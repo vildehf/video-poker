@@ -8,7 +8,7 @@ import type { PokerHand } from "../types/PokerHand";
 
 type GameStore = {
   currentPlayer: Player | null;
-  setCurrentPlayer: (player: Player) => void;
+  setCurrentPlayer: (player: Player | null) => void;
   setPlayerCoins: (coins: number) => void;
 
   hand: PlayingCard[];

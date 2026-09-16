@@ -1,29 +1,55 @@
 .gameInfo {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  padding: 1rem;
+  margin-inline: auto;
+  max-width: 700px;
+  border-radius: 10px;
+  background-color: #083d24;
+  color: white;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
 
   p {
     margin: 0;
+    font-weight: 600;
   }
+}
+
+.gameArea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-block: 2rem;
 }
 
 .hand {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
-  margin-block: 2rem;
+}
+
+.gameButton {
+  background-color: #083d24;
+  color: white;
 }
 
 @media (max-width: 600px) {
+  .gameArea {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
   .hand {
     gap: 0.5rem;
   }
 
   .gameInfo {
+    color: white;
     display: grid;
     justify-content: center;
     gap: 0.5rem;

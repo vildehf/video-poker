@@ -56,6 +56,16 @@ export default function PlayersPage() {
     setPlayers([...players, newPlayer]);
   }
 
+  function deletePlayer(index: number) {
+    const undatePlayers = players.filter(
+      (_, playerIndex) => playerIndex !== index,
+    );
+    setPlayers(undatePlayers);
+    if (currentPlayer?.name === players[index].name) {
+      setCurrentPlayer(null);
+    }
+  }
+
   return (
     <main className={styles.playersPage}>
       <h1>Spillere</h1>
@@ -73,12 +83,25 @@ export default function PlayersPage() {
       <h2>Spillere</h2>
       <div className={styles.playerList}>
         {players.map((player, index) => (
-          <button
-            key={`${player.name}-${index}`}
-            onClick={() => setCurrentPlayer(player)}
-          >
-            {player.name} - {player.coins} coins
-          </button>
+          <div key={`${player.name}-${index}`} className={styles.playerItem}>
+            <button
+              className={
+                currentPlayer?.name === player.name
+                  ? styles.selectedPlayer
+                  : " "
+              }
+              onClick={() => setCurrentPlayer(player)}
+            >
+              {player.name} - {player.coins} coins
+            </button>
+            <button
+              type="button"
+              className={styles.deleteButton}
+              onClick={() => deletePlayer(index)}
+            >
+              Slett
+            </button>
+          </div>
         ))}
       </div>
       {currentPlayer && <p>Valgt spiller: {currentPlayer.name}</p>}
