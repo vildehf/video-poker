@@ -1,5 +1,6 @@
-// Beskriver en spiller med navn og antall coins
+/** Beskriver en spiller med unik ID, navn og saldo. */
 export type Player = {
+  id: string;
   name: string;
   coins: number;
 };

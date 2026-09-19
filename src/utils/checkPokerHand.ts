@@ -1,102 +1,7 @@
 import type { PlayingCard } from "../types/PlayingCard";
 import type { PokerHand } from "../types/PokerHand";
 
-/**
- * Sjekker om hånden inneholder et par.
- * @param cards kortene som skal sjekkes
- * @returns true hvis hånden inneholder et par
- */
-function hasPair(cards: PlayingCard[]) {
-  return cards.some((card, index) =>
-    cards.some(
-      (otherCard, otherIndex) =>
-        index !== otherIndex && card.value === otherCard.value,
-    ),
-  );
-}
-
-/**
- * Sjekker om hånden inneholder to par.
- * @param cards kortene som skal sjekkes
- * @returns true hvis hånden inneholder to par
- */
-function hasTwoPairs(cards: PlayingCard[]) {
-  const pairValues: string[] = [];
-
-  cards.forEach((card) => {
-    const matchingCards = cards.filter(
-      (otherCard) => otherCard.value === card.value,
-    );
-
-    if (matchingCards.length === 2 && !pairValues.includes(card.value)) {
-      pairValues.push(card.value);
-    }
-  });
-
-  return pairValues.length === 2;
-}
-
-/**
- * Sjekker om hånden inneholder tre kort med samme verdi.
- * @param cards kortene som skal sjekkes
- * @returns true hvis hånden inneholder tre like
- */
-function hasThreeOfAKind(cards: PlayingCard[]) {
-  return cards.some((card) => {
-    const matchingCards = cards.filter(
-      (otherCard) => otherCard.value === card.value,
-    );
-
-    return matchingCards.length === 3;
-  });
-}
-
-/**
- * Sjekker om hånden inneholder fire kort med samme verdi.
- * @param cards kortene som skal sjekkes
- * @returns true hvis hånden inneholder fire like
- */
-function hasFourOfAKind(cards: PlayingCard[]) {
-  return cards.some((card) => {
-    const matchingCards = cards.filter(
-      (otherCard) => otherCard.value === card.value,
-    );
-
-    return matchingCards.length === 4;
-  });
-}
-
-/**
- * Sjekker om alle kortene har samme sort.
- * @param cards kortene som skal sjekkes
- * @returns true hvis hånden er en flush
- */
-function hasFlush(cards: PlayingCard[]) {
-  return cards.every((card) => card.suit === cards[0].suit);
-}
-
-/**
- * Sjekker om hånden inneholder tre like og et par.
- * @param cards kortene som skal sjekkes
- * @returns true hvis hånden er fullt hus
- */
-function hasFullHouse(cards: PlayingCard[]) {
-  const amounts: number[] = [];
-
-  cards.forEach((card) => {
-    const matchingCards = cards.filter(
-      (otherCard) => otherCard.value === card.value,
-    );
-
-    if (!amounts.includes(matchingCards.length)) {
-      amounts.push(matchingCards.length);
-    }
-  });
-
-  return amounts.includes(3) && amounts.includes(2);
-}
-// Kortverdiene i rekkefølge, brukt for å sjekke straight
-const cardValues = [
+const CardValue = [
   "2",
   "3",
   "4",
@@ -113,95 +18,48 @@ const cardValues = [
 ];
 
 /**
- * Sjekker om kortene har fem verdier i rekkefølge.
- * @param cards kortene som skal sjekkes
- * @returns true hvis hånden er en straight
- */
-function hasStraight(cards: PlayingCard[]) {
-  const positions = cards.map((card) => cardValues.indexOf(card.value));
-
-  positions.sort((a, b) => a - b);
-
-  const isLowAceStraight =
-    positions.includes(12) &&
-    positions.includes(0) &&
-    positions.includes(1) &&
-    positions.includes(2) &&
-    positions.includes(3);
-
-  if (isLowAceStraight) {
-    return true;
-  }
-
-  return positions.every(
-    (position, index) => index === 0 || position === positions[index - 1] + 1,
-  );
-}
-
-/**
- * Sjekker om hånden er både straight og flush.
- * @param cards kortene som skal sjekkes
- * @returns true hvis hånden er en straight flush
- */
-function hasStraightFlush(cards: PlayingCard[]) {
-  return hasStraight(cards) && hasFlush(cards);
-}
-
-/**
- * Sjekker om hånden er en royal flush.
- * @param cards kortene som skal sjekkes
- * @returns true hvis hånden er en royal flush
- */
-function hasRoyalFlush(cards: PlayingCard[]) {
-  const royalValues = ["10", "J", "Q", "K", "A"];
-
-  return (
-    hasStraightFlush(cards) &&
-    cards.every((card) => royalValues.includes(card.value))
-  );
-}
-
-/**
- * Sjekker hvilken pokerhånd kortene utgjør.
- * @param cards kortene som skal sjekkes
- * @returns navnet på pokerhånden
+ * Tar imot fem kort og returnerer den sterkeste pokerhånden.
+ * Kaster en feil dersom antall kort ikke er fem.
  */
 export default function checkPokerHand(cards: PlayingCard[]): PokerHand {
-  if (hasRoyalFlush(cards)) {
-    return "Royal Flush";
+  if (cards.length !== 5) {
+    throw new Error("En pokerhånd må inneholde fem kort.");
   }
 
-  if (hasStraightFlush(cards)) {
-    return "Straight Flush";
+  // Teller hvor mange ganger hver kortverdi forekommer.
+  const counts: Record<string, number> = {};
+
+  for (const card of cards) {
+    counts[card.value] = (counts[card.value] ?? 0) + 1;
   }
 
-  if (hasFourOfAKind(cards)) {
-    return "Fire like";
+  const amounts = Object.values(counts);
+  const pairs = amounts.filter((amount) => amount === 2).length;
+
+  const isFlush = cards.every((card) => card.suit === cards[0].suit);
+
+  const positions = cards
+    .map((card) => CardValue.indexOf(card.value))
+    .sort((a, b) => a - b);
+
+  // Ess kan også brukes som laveste i A-2-3-4-5.
+  const isLowAceStraight = positions.join(",") === "0,1,2,3,12";
+
+  const isStraight =
+    isLowAceStraight ||
+    positions.every((position, index) => position === positions[0] + index);
+
+  if (isFlush && isStraight) {
+    return positions[0] === 8 ? "Royal Flush" : "Straight Flush";
   }
 
-  if (hasFullHouse(cards)) {
-    return "Fullt hus";
-  }
-
-  if (hasFlush(cards)) {
-    return "Flush";
-  }
-
-  if (hasStraight(cards)) {
-    return "Straight";
-  }
-
-  if (hasThreeOfAKind(cards)) {
-    return "Tre like";
-  }
-
-  if (hasTwoPairs(cards)) {
-    return "To par";
-  }
-
-  if (hasPair(cards)) {
-    return "Par";
-  }
+  if (amounts.includes(4)) return "Fire like";
+  if (amounts.includes(3) && pairs === 1) return "Fullt hus";
+  if (isFlush) return "Flush";
+  if (isStraight) return "Straight";
+  if (amounts.includes(3)) return "Tre like";
+  if (pairs === 2) return "To par";
+  if (pairs === 1) return "Par";
 
   return "Høyt kort";
 }

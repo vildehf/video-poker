@@ -1,75 +1,61 @@
-# React + TypeScript + Vite
+# Video Poker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Et videopokerspill laget med React, TypeScript, React Router og Zustand.
 
-Currently, two official plugins are available:
+## Kom i gang
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Installer avhengighetene:
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Start utviklingsserveren:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run dev
 ```
+
+Åpne adressen som vises i terminalen.
+
+## Spillet
+
+- Opprett eller velg en spiller. Nye spillere får 100 mynter.
+- Velg innsats og hvilke kort du vil beholde med HOLD.
+- Bytt kort én gang per runde og få premie etter pokerhånden.
+- Spilltilstanden lagres i localStorage i nettleseren.
+
+Appen har egne sider for spillet, regler og spillere.
+
+## Prosjektstruktur
+
+- `src/components`: spillbrett og gjenbrukbare komponenter.
+- `src/pages`: de tre sidene i appen.
+- `src/store`: spilltilstand og handlinger i Zustand.
+- `src/types`: TypeScript-typer.
+- `src/utils`: kortstokk, stokking, håndberegning og premier.
+
+## Kontroller
+
+Bygg prosjektet:
+
+```bash
+npm run build
+```
+
+Kjør kodekontroll:
+
+```bash
+npm run lint
+```
+
+Kjør testene for pokerhender med Node 22.6 eller nyere:
+
+```bash
+node --experimental-strip-types --test src/utils/checkPokerHand.test.ts
+```
+
+## Manuell testing
+
+Mobilvisning og tastaturnavigasjon er testet. Det er også kontrollert
+at kort og saldo beholdes ved navigasjon mellom sidene og ved reload.

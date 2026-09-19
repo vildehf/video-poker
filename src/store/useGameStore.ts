@@ -5,33 +5,35 @@ import type { PlayingCard } from "../types/PlayingCard";
 import createDeck from "../utils/createDeck";
 import shuffleDeck from "../utils/shuffleDeck";
 import type { PokerHand } from "../types/PokerHand";
+import checkPokerHand from "../utils/checkPokerHand";
+import { payouts } from "../utils/payouts";
 
 type GameStore = {
   // Spiller
   currentPlayer: Player | null;
   setCurrentPlayer: (player: Player | null) => void;
-  setPlayerCoins: (coins: number) => void;
+  players: Player[];
+  addPlayer: (name: string) => void;
+  deletePlayer: (id: string) => void;
   // Spillerens hånd
   hand: PlayingCard[];
-  setHand: (hand: PlayingCard[]) => void;
   // Kortstokk og kastede kort
   deck: PlayingCard[];
   discardedCards: PlayingCard[];
-  setDeck: (deck: PlayingCard[]) => void;
-  setDiscardedCards: (cards: PlayingCard[]) => void;
   // Spillrunde
   startGame: () => void;
+  startNewRound: () => void;
+  dealNewHand: () => void;
   currentBet: number;
-  setCurrentBet: (bet: number) => void;
+  increaseBet: () => void;
+  decreaseBet: () => void;
 
   heldCards: number[];
-  setHeldCards: (cards: number[]) => void;
+  toggleHold: (index: number) => void;
 
   hasDrawn: boolean;
-  setHasDrawn: (hasDrawn: boolean) => void;
 
   pokerHand: PokerHand;
-  setPokerHand: (hand: PokerHand) => void;
 };
 
 /**
@@ -41,6 +43,7 @@ export const useGameStore = create<GameStore>()(
   persist(
     (set) => ({
       // Startverdier for spillet
+      players: [],
       currentPlayer: null,
       hand: [],
       deck: [],
@@ -50,43 +53,156 @@ export const useGameStore = create<GameStore>()(
       hasDrawn: false,
       pokerHand: "Høyt kort",
 
+      /**
+       * Oppretter en spiller med unik ID, oppgitt navn og 100 mynter.
+       */
+      addPlayer: (name) => {
+        const trimmedName = name.trim();
+        if (!trimmedName) return;
+
+        const player: Player = {
+          id: crypto.randomUUID(),
+          name: trimmedName,
+          coins: 100,
+        };
+
+        set((state) => ({
+          players: [...state.players, player],
+        }));
+      },
+      /**
+       * Sletter spilleren med oppgitt ID og fjerner valget hvis spilleren var aktiv.
+       */
+      deletePlayer: (id) => {
+        set((state) => ({
+          players: state.players.filter((player) => player.id !== id),
+          currentPlayer:
+            state.currentPlayer?.id === id ? null : state.currentPlayer,
+        }));
+      },
+      /**
+       * Velger aktiv spiller, eller fjerner valget dersom player er null.
+       */
       setCurrentPlayer: (player) => {
         set({ currentPlayer: player });
       },
-      setPlayerCoins: (coins) => {
-        set((state) => ({
-          currentPlayer: state.currentPlayer
-            ? { ...state.currentPlayer, coins }
-            : null,
-        }));
+
+      /**
+       * Øker innsatsen med en før trekket, begrenset av saldoen og maks fem.
+       */
+      increaseBet: () => {
+        set((state) => {
+          if (
+            !state.currentPlayer ||
+            state.hasDrawn ||
+            state.currentBet >= Math.min(5, state.currentPlayer.coins)
+          ) {
+            return state;
+          }
+
+          return { currentBet: state.currentBet + 1 };
+        });
       },
 
-      setHand: (hand) => {
-        set({ hand });
+      /**
+       * Senker innsatsen med en, til minimum en, før trekket er fullført.
+       */
+      decreaseBet: () => {
+        set((state) => {
+          if (!state.currentPlayer || state.hasDrawn || state.currentBet <= 1) {
+            return state;
+          }
+
+          return { currentBet: state.currentBet - 1 };
+        });
       },
 
-      setDeck: (deck) => {
-        set({ deck });
+      /**
+       * Slår HOLD av eller på for kortet på oppgitt plass i hånden.
+       */
+      toggleHold: (index) => {
+        set((state) => {
+          if (state.hasDrawn) return state;
+
+          return {
+            heldCards: state.heldCards.includes(index)
+              ? state.heldCards.filter((heldIndex) => heldIndex !== index)
+              : [...state.heldCards, index],
+          };
+        });
       },
 
-      setDiscardedCards: (cards) => {
-        set({ discardedCards: cards });
-      },
+      /**
+       * Bytter kort som ikke er holdt, beregner premien og oppdaterer saldoen.
+       * Avslutter runden med én samlet oppdatering.
+       */
+      dealNewHand: () => {
+        set((state) => {
+          const { currentPlayer, currentBet, hand, deck, heldCards } = state;
 
-      setCurrentBet: (bet) => {
-        set({ currentBet: bet });
-      },
+          if (
+            !currentPlayer ||
+            state.hasDrawn ||
+            hand.length !== 5 ||
+            currentPlayer.coins < currentBet
+          ) {
+            return state;
+          }
 
-      setHeldCards: (cards) => {
-        set({ heldCards: cards });
-      },
+          const discarded = hand.filter(
+            (_, index) => !heldCards.includes(index),
+          );
 
-      setHasDrawn: (hasDrawn) => {
-        set({ hasDrawn });
-      },
+          if (deck.length < discarded.length) return state;
 
-      setPokerHand: (hand) => {
-        set({ pokerHand: hand });
+          let nextCardIndex = 0;
+
+          const newHand = hand.map((card, index) =>
+            heldCards.includes(index) ? card : deck[nextCardIndex++],
+          );
+
+          const pokerHand = checkPokerHand(newHand);
+          const payout = payouts[pokerHand] * currentBet;
+          const updatedPlayer = {
+            ...currentPlayer,
+            coins: currentPlayer.coins - currentBet + payout,
+          };
+
+          return {
+            hand: newHand,
+            deck: deck.slice(nextCardIndex),
+            discardedCards: [...state.discardedCards, ...discarded],
+            heldCards: [],
+            pokerHand,
+            hasDrawn: true,
+            currentPlayer: updatedPlayer,
+            players: state.players.map((player) =>
+              player.id === updatedPlayer.id ? updatedPlayer : player,
+            ),
+          };
+        });
+      },
+      /**
+       * Starter neste runde med nye kort og nullstiller innsats og HOLD.
+       * Gjør ingenting hvis forrige trekk ikke er fullført.
+       */
+      startNewRound: () => {
+        set((state) => {
+          if (!state.hasDrawn) return state;
+
+          const shuffledDeck = shuffleDeck(createDeck());
+          const hand = shuffledDeck.slice(0, 5);
+
+          return {
+            hand,
+            deck: shuffledDeck.slice(5),
+            discardedCards: [],
+            heldCards: [],
+            hasDrawn: false,
+            pokerHand: checkPokerHand(hand),
+            currentBet: 1,
+          };
+        });
       },
 
       /**
@@ -94,11 +210,13 @@ export const useGameStore = create<GameStore>()(
        */
       startGame: () => {
         const shuffledDeck = shuffleDeck(createDeck());
+        const hand = shuffledDeck.slice(0, 5);
 
         set({
-          hand: shuffledDeck.slice(0, 5),
+          hand,
           deck: shuffledDeck.slice(5),
           discardedCards: [],
+          pokerHand: checkPokerHand(hand),
         });
       },
     }),

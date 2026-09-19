@@ -1,71 +1,24 @@
-import { useState, useEffect } from "react";
-import type { Player } from "../../types/Player";
 import styles from "./PlayersPage.module.css";
 import { useGameStore } from "../../store/useGameStore";
 
 /**
- * Viser siden for å opprette og velge spillere.
- * @returns spillersiden
+ * Viser spillerlisten og lar brukeren opprette, velge og slette spillere.
  */
 export default function PlayersPage() {
-  const [players, setPlayers] = useState<Player[]>(() => {
-    const savedPlayers = localStorage.getItem("players");
-
-    if (savedPlayers) {
-      return JSON.parse(savedPlayers);
-    }
-
-    return [];
-  });
-
+  const players = useGameStore((state) => state.players);
   const currentPlayer = useGameStore((state) => state.currentPlayer);
   const setCurrentPlayer = useGameStore((state) => state.setCurrentPlayer);
-  // Lagrer spillerlisten i en localStorage når listen endres.
-  useEffect(() => {
-    localStorage.setItem("players", JSON.stringify(players));
-  }, [players]);
-  // Oppdaterer spillerlisten når den valgte spillerens coins endres.
-  useEffect(() => {
-    if (!currentPlayer) {
-      return;
-    }
-
-    setPlayers((players) =>
-      players.map((player) =>
-        player.name === currentPlayer.name ? currentPlayer : player,
-      ),
-    );
-  }, [currentPlayer]);
+  const addPlayer = useGameStore((state) => state.addPlayer);
+  const deletePlayer = useGameStore((state) => state.deletePlayer);
 
   /**
-   * Oppretter en ny spiller med 100 coins.
-   * @param formData data fra skjemaet med spillerens navn.
+   * Leser navnet fra skjemaet og oppretter spilleren gjennom store.
    */
-  function addPlayer(formData: FormData) {
+  function handleAddPlayer(formData: FormData) {
     const name = formData.get("name");
 
-    if (typeof name !== "string" || name.trim() === "") {
-      return;
-    }
-
-    const newPlayer: Player = {
-      name: name.trim(),
-      coins: 100,
-    };
-
-    setPlayers([...players, newPlayer]);
-  }
-  /**
-   * Sletter en spiller fra spillerlisten.
-   * @param index plasseringen til spilleren som skal slettes
-   */
-  function deletePlayer(index: number) {
-    const updatePlayers = players.filter(
-      (_, playerIndex) => playerIndex !== index,
-    );
-    setPlayers(updatePlayers);
-    if (currentPlayer?.name === players[index].name) {
-      setCurrentPlayer(null);
+    if (typeof name === "string") {
+      addPlayer(name);
     }
   }
 
@@ -74,10 +27,10 @@ export default function PlayersPage() {
       <h1>Spillere</h1>
       <p>Her kan spilleren velges eller opprettes.</p>
 
-      <form action={addPlayer}>
+      <form action={handleAddPlayer}>
         <label>
           Navn:
-          <input type="text" name="name" />
+          <input type="text" name="name" required />
         </label>
 
         <button type="submit">Opprett spiller</button>
@@ -85,27 +38,31 @@ export default function PlayersPage() {
 
       <h2>Spillere</h2>
       <div className={styles.playerList}>
-        {players.map((player, index) => (
-          <div key={`${player.name}-${index}`} className={styles.playerItem}>
+        {players.map((player) => (
+          <div key={player.id} className={styles.playerItem}>
             <button
+              type="button"
               className={
-                currentPlayer?.name === player.name ? styles.selectedPlayer : ""
+                currentPlayer?.id === player.id ? styles.selectedPlayer : ""
               }
+              aria-pressed={currentPlayer?.id === player.id}
               onClick={() => setCurrentPlayer(player)}
             >
               {player.name} - {player.coins} coins
             </button>
+
             <button
               type="button"
               className={styles.deleteButton}
-              onClick={() => deletePlayer(index)}
+              aria-label={`Slett ${player.name}`}
+              onClick={() => deletePlayer(player.id)}
             >
               Slett
             </button>
           </div>
         ))}
       </div>
-      {currentPlayer && <p>Valgt spiller: {currentPlayer.name}</p>}
+      {currentPlayer && <p>Valgt spiller: {currentPlayer.name} </p>}
     </main>
   );
 }

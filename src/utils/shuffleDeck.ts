@@ -1,14 +1,17 @@
 import type { PlayingCard } from "../types/PlayingCard";
 
 /**
- * Stokker en kortstokk.
- * @param deck kortstokken som skal stokkes
- * @returns en stokket kopi av kortstokken
+ * Tar imot en kortstokk og returnerer en stokket kopi.
+ * Bruker Fisher-Yates uten å endre den opprinnelige kortstokken.
  */
 export default function shuffleDeck(deck: PlayingCard[]): PlayingCard[] {
-  const shuffledDeck = [...deck];
+  const shuffled = [...deck];
 
-  shuffledDeck.sort(() => Math.random() - 0.5);
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
 
-  return shuffledDeck;
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled;
 }
