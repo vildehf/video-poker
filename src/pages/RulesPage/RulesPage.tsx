@@ -5,7 +5,7 @@ import styles from "./RulesPage.module.css";
  * Viser regler og premier for spillet.
  * @returns regelsiden
  */
-export default function RulesPages() {
+export default function RulesPage() {
   return (
     <main className={styles.rulesPage}>
       <h1>Regler</h1>

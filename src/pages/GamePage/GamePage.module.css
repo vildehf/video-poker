@@ -42,22 +42,16 @@
 @media (max-width: 600px) {
   .gameArea {
     flex-direction: column;
-    gap: 1.5rem;
   }
   .hand {
     gap: 0.5rem;
   }
 
   .gameInfo {
-    color: white;
     display: grid;
     justify-content: center;
     gap: 0.5rem;
     margin-bottom: 1.5rem;
-
-    p {
-      margin: 0;
-    }
 
     button {
       margin-top: 0.5rem;

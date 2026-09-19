@@ -7,21 +7,20 @@ import shuffleDeck from "../utils/shuffleDeck";
 import type { PokerHand } from "../types/PokerHand";
 
 type GameStore = {
+  // Spiller
   currentPlayer: Player | null;
   setCurrentPlayer: (player: Player | null) => void;
   setPlayerCoins: (coins: number) => void;
-
+  // Spillerens hånd
   hand: PlayingCard[];
   setHand: (hand: PlayingCard[]) => void;
-
+  // Kortstokk og kastede kort
   deck: PlayingCard[];
   discardedCards: PlayingCard[];
-
   setDeck: (deck: PlayingCard[]) => void;
   setDiscardedCards: (cards: PlayingCard[]) => void;
-
+  // Spillrunde
   startGame: () => void;
-
   currentBet: number;
   setCurrentBet: (bet: number) => void;
 
@@ -41,13 +40,13 @@ type GameStore = {
 export const useGameStore = create<GameStore>()(
   persist(
     (set) => ({
+      // Startverdier for spillet
       currentPlayer: null,
       hand: [],
       deck: [],
       discardedCards: [],
       currentBet: 1,
       heldCards: [],
-
       hasDrawn: false,
       pokerHand: "Høyt kort",
 
@@ -57,7 +56,7 @@ export const useGameStore = create<GameStore>()(
       setPlayerCoins: (coins) => {
         set((state) => ({
           currentPlayer: state.currentPlayer
-            ? { ...state.currentPlayer, coins: coins }
+            ? { ...state.currentPlayer, coins }
             : null,
         }));
       },
@@ -83,7 +82,7 @@ export const useGameStore = create<GameStore>()(
       },
 
       setHasDrawn: (hasDrawn) => {
-        set({ hasDrawn: hasDrawn });
+        set({ hasDrawn });
       },
 
       setPokerHand: (hand) => {

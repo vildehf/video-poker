@@ -20,11 +20,11 @@ export default function PlayersPage() {
 
   const currentPlayer = useGameStore((state) => state.currentPlayer);
   const setCurrentPlayer = useGameStore((state) => state.setCurrentPlayer);
-
+  // Lagrer spillerlisten i en localStorage når listen endres.
   useEffect(() => {
     localStorage.setItem("players", JSON.stringify(players));
   }, [players]);
-
+  // Oppdaterer spillerlisten når den valgte spillerens coins endres.
   useEffect(() => {
     if (!currentPlayer) {
       return;
@@ -55,12 +55,15 @@ export default function PlayersPage() {
 
     setPlayers([...players, newPlayer]);
   }
-
+  /**
+   * Sletter en spiller fra spillerlisten.
+   * @param index plasseringen til spilleren som skal slettes
+   */
   function deletePlayer(index: number) {
-    const undatePlayers = players.filter(
+    const updatePlayers = players.filter(
       (_, playerIndex) => playerIndex !== index,
     );
-    setPlayers(undatePlayers);
+    setPlayers(updatePlayers);
     if (currentPlayer?.name === players[index].name) {
       setCurrentPlayer(null);
     }
@@ -86,9 +89,7 @@ export default function PlayersPage() {
           <div key={`${player.name}-${index}`} className={styles.playerItem}>
             <button
               className={
-                currentPlayer?.name === player.name
-                  ? styles.selectedPlayer
-                  : " "
+                currentPlayer?.name === player.name ? styles.selectedPlayer : ""
               }
               onClick={() => setCurrentPlayer(player)}
             >

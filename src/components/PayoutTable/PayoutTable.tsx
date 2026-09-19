@@ -1,3 +1,15 @@
+// Inneholder pokerhendene og hvor mange ganger innsatsen de gir i premie
+const payouts = [
+  { hand: "Royal Flush", payout: 10 },
+  { hand: "Straight Flush", payout: 9 },
+  { hand: "Fire like", payout: 8 },
+  { hand: "Fullt hus", payout: 7 },
+  { hand: "Flush", payout: 6 },
+  { hand: "Straight", payout: 5 },
+  { hand: "Tre like", payout: 4 },
+  { hand: "To par", payout: 3 },
+  { hand: "Par", payout: 2 },
+];
 /**
  * Viser pokerhendene og premiene for hver hånd.
  * @returns tabellen med pokerhender og premier
@@ -13,42 +25,12 @@ export default function PayoutTable() {
       </thead>
 
       <tbody>
-        <tr>
-          <td>Royal Flush</td>
-          <td>10 × innsats</td>
-        </tr>
-        <tr>
-          <td>Straight Flush</td>
-          <td>9 × innsats</td>
-        </tr>
-        <tr>
-          <td>Fire like</td>
-          <td>8 × innsats</td>
-        </tr>
-        <tr>
-          <td>Fullt hus</td>
-          <td>7 × innsats</td>
-        </tr>
-        <tr>
-          <td>Flush</td>
-          <td>6 × innsats</td>
-        </tr>
-        <tr>
-          <td>Straight</td>
-          <td>5 × innsats</td>
-        </tr>
-        <tr>
-          <td>Tre like</td>
-          <td>4 × innsats</td>
-        </tr>
-        <tr>
-          <td>To par</td>
-          <td>3 × innsats</td>
-        </tr>
-        <tr>
-          <td>Par</td>
-          <td>2 × innsats</td>
-        </tr>
+        {payouts.map((payout) => (
+          <tr key={payout.hand}>
+            <td>{payout.hand}</td>
+            <td>{payout.payout} × innsats</td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );

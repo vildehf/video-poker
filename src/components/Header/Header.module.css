@@ -12,10 +12,10 @@
     padding: 0.5rem 1rem;
     text-decoration: none;
     color: white;
-  }
 
-  a:hover {
-    text-decoration: underline;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   :global(.active) {

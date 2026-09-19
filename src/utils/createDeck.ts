@@ -28,8 +28,8 @@ export default function createDeck(): PlayingCard[] {
   suits.forEach((suit) => {
     values.forEach((value) => {
       deck.push({
-        suit: suit,
-        value: value,
+        suit,
+        value,
       });
     });
   });

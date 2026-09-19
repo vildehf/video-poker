@@ -40,6 +40,11 @@ export default function Card({
     return null;
   }
 
+  /**
+   * Finner riktig symbol for kortets sort.
+   * @param card kortet som skal få symbol
+   * @returns symbolet for kortets sort
+   */
   function getSuitSymbol(card: PlayingCard) {
     if (card.suit === "hearts") return "♥";
     if (card.suit === "diamonds") return "♦";
@@ -54,7 +59,7 @@ export default function Card({
       type="button"
       className={`${styles.card} ${isRed ? styles.red : styles.black} ${
         held ? styles.held : ""
-      } `}
+      }`}
       onClick={onClick}
       disabled={disabled}
       aria-pressed={held}
