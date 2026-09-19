@@ -20,11 +20,11 @@ export default function PlayersPage() {
 
   const currentPlayer = useGameStore((state) => state.currentPlayer);
   const setCurrentPlayer = useGameStore((state) => state.setCurrentPlayer);
-
+  // Lagrer spillerlisten i en localStorage når listen endres.
   useEffect(() => {
     localStorage.setItem("players", JSON.stringify(players));
   }, [players]);
-
+  // Oppdaterer spillerlisten når den valgte spillerens coins endres.
   useEffect(() => {
     if (!currentPlayer) {
       return;
@@ -55,6 +55,19 @@ export default function PlayersPage() {
 
     setPlayers([...players, newPlayer]);
   }
+  /**
+   * Sletter en spiller fra spillerlisten.
+   * @param index plasseringen til spilleren som skal slettes
+   */
+  function deletePlayer(index: number) {
+    const updatePlayers = players.filter(
+      (_, playerIndex) => playerIndex !== index,
+    );
+    setPlayers(updatePlayers);
+    if (currentPlayer?.name === players[index].name) {
+      setCurrentPlayer(null);
+    }
+  }
 
   return (
     <main className={styles.playersPage}>
@@ -73,12 +86,23 @@ export default function PlayersPage() {
       <h2>Spillere</h2>
       <div className={styles.playerList}>
         {players.map((player, index) => (
-          <button
-            key={`${player.name}-${index}`}
-            onClick={() => setCurrentPlayer(player)}
-          >
-            {player.name} - {player.coins} coins
-          </button>
+          <div key={`${player.name}-${index}`} className={styles.playerItem}>
+            <button
+              className={
+                currentPlayer?.name === player.name ? styles.selectedPlayer : ""
+              }
+              onClick={() => setCurrentPlayer(player)}
+            >
+              {player.name} - {player.coins} coins
+            </button>
+            <button
+              type="button"
+              className={styles.deleteButton}
+              onClick={() => deletePlayer(index)}
+            >
+              Slett
+            </button>
+          </div>
         ))}
       </div>
       {currentPlayer && <p>Valgt spiller: {currentPlayer.name}</p>}

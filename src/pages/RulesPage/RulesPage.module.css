@@ -2,15 +2,34 @@
   display: grid;
   justify-items: center;
   gap: 1rem;
+  color: white;
+
+  p {
+    max-width: 650px;
+    padding: 1rem;
+    margin: 0;
+    background-color: #083d24;
+    border-radius: 8px;
+  }
 
   table {
     border-collapse: collapse;
+    background-color: white;
+    color: black;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 
     th,
     td {
       padding: 0.75rem 1.5rem;
       border: 1px solid black;
       text-align: left;
+    }
+
+    th {
+      background-color: #083d24;
+      color: white;
     }
   }
 }

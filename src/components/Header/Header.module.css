@@ -1,19 +1,25 @@
 .navBar {
   display: flex;
   justify-content: center;
-  padding: 0.5rem;
+  padding: 0.8rem 0.5rem;
+  width: 100%;
   gap: 1rem;
+  background-color: #083d24;
+  border-bottom: 2px solid #0a3d21;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 
   a {
     padding: 0.5rem 1rem;
     text-decoration: none;
-  }
+    color: white;
 
-  a:hover {
-    text-decoration: underline;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   :global(.active) {
     font-weight: 700;
+    text-decoration: underline;
   }
 }

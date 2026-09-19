@@ -7,11 +7,10 @@
   border-radius: 8px;
   padding: 0.5rem;
   background-color: white;
-  font: inherit;
-  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 
   &:focus-visible {
-    outline: 3px solid currentColor;
+    outline: 3px solid #f5f1e8;
     outline-offset: 3px;
   }
 
@@ -40,6 +39,7 @@
 
   &.held {
     outline: 3px solid gold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
     transform: translateY(-8px);
   }
 
@@ -51,5 +51,11 @@
       linear-gradient(-45deg, white 1px, transparent 1px);
     background-size: 12px 12px;
     cursor: default;
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    width: 100px;
   }
 }

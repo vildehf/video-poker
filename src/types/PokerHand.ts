@@ -1,3 +1,4 @@
+// Pokerhendene som spillet kan gjenkjenne
 export type PokerHand =
   | "Royal Flush"
   | "Straight Flush"

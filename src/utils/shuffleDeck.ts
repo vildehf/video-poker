@@ -6,9 +6,9 @@ import type { PlayingCard } from "../types/PlayingCard";
  * @returns en stokket kopi av kortstokken
  */
 export default function shuffleDeck(deck: PlayingCard[]): PlayingCard[] {
-  const shuffleDeck = [...deck];
+  const shuffledDeck = [...deck];
 
-  shuffleDeck.sort(() => Math.random() - 0.5);
+  shuffledDeck.sort(() => Math.random() - 0.5);
 
-  return shuffleDeck;
+  return shuffledDeck;
 }

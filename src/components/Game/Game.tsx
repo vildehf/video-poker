@@ -8,22 +8,17 @@ import { useGameStore } from "../../store/useGameStore";
 import checkPokerHand from "../../utils/checkPokerHand";
 
 export default function Game() {
+  // Kortstokk
   const deck = useGameStore((state) => state.deck);
   const setDeck = useGameStore((state) => state.setDeck);
   const startGame = useGameStore((state) => state.startGame);
-
+  // Spillerens hånd
   const hand = useGameStore((state) => state.hand);
   const setHand = useGameStore((state) => state.setHand);
-
+  // Kastede kort
   const discardedCards = useGameStore((state) => state.discardedCards);
   const setDiscardedCards = useGameStore((state) => state.setDiscardedCards);
-
-  useEffect(() => {
-    if (hand.length === 0 && deck.length === 0) {
-      startGame();
-    }
-  }, [hand.length, deck.length, startGame]);
-
+  // Spillrunde og spiller
   const currentBet = useGameStore((state) => state.currentBet);
   const setCurrentBet = useGameStore((state) => state.setCurrentBet);
   const pokerHand = useGameStore((state) => state.pokerHand);
@@ -34,6 +29,12 @@ export default function Game() {
   const setHasDrawn = useGameStore((state) => state.setHasDrawn);
   const currentPlayer = useGameStore((state) => state.currentPlayer);
   const setPlayerCoins = useGameStore((state) => state.setPlayerCoins);
+  // Starter spillet hvis det ikke finnes en hånd eller kortstokk
+  useEffect(() => {
+    if (hand.length === 0 && deck.length === 0) {
+      startGame();
+    }
+  }, [hand.length, deck.length, startGame]);
 
   /**
    * Øker innsatsen med 1 så lenge innsatsen er mindre enn 5.
@@ -144,21 +145,27 @@ export default function Game() {
           Øk innsats
         </button>
       </div>
-      <div className={styles.hand}>
-        <Card back />
 
-        {hand.map((card, index) => (
-          <Card
-            key={`${card.suit}-${card.value}`}
-            card={card}
-            onClick={() => toggleHold(index)}
-            held={heldCards.includes(index)}
-            disabled={hasDrawn}
-          />
-        ))}
+      <div className={styles.gameArea}>
+        <div className={styles.deck}>
+          <Card back />
+        </div>
+
+        <div className={styles.hand}>
+          {hand.map((card, index) => (
+            <Card
+              key={`${card.suit}-${card.value}`}
+              card={card}
+              onClick={() => toggleHold(index)}
+              held={heldCards.includes(index)}
+              disabled={hasDrawn}
+            />
+          ))}
+        </div>
       </div>
 
       <button
+        className={styles.gameButton}
         onClick={dealNewHand}
         disabled={
           hasDrawn || !currentPlayer || currentPlayer.coins < currentBet
@@ -166,7 +173,9 @@ export default function Game() {
       >
         Del ut nye kort
       </button>
-      <button onClick={startNewRound}>Ny runde</button>
+      <button className={styles.gameButton} onClick={startNewRound}>
+        Ny runde
+      </button>
     </>
   );
 }

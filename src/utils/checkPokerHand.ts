@@ -18,7 +18,7 @@ function hasPair(cards: PlayingCard[]) {
 /**
  * Sjekker om hånden inneholder to par.
  * @param cards kortene som skal sjekkes
- * @returns true hvis hånden inneholder et par
+ * @returns true hvis hånden inneholder to par
  */
 function hasTwoPairs(cards: PlayingCard[]) {
   const pairValues: string[] = [];
@@ -95,7 +95,7 @@ function hasFullHouse(cards: PlayingCard[]) {
 
   return amounts.includes(3) && amounts.includes(2);
 }
-
+// Kortverdiene i rekkefølge, brukt for å sjekke straight
 const cardValues = [
   "2",
   "3",
