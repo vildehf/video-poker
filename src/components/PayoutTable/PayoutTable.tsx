@@ -1,18 +1,7 @@
-// Inneholder pokerhendene og hvor mange ganger innsatsen de gir i premie
-const payouts = [
-  { hand: "Royal Flush", payout: 10 },
-  { hand: "Straight Flush", payout: 9 },
-  { hand: "Fire like", payout: 8 },
-  { hand: "Fullt hus", payout: 7 },
-  { hand: "Flush", payout: 6 },
-  { hand: "Straight", payout: 5 },
-  { hand: "Tre like", payout: 4 },
-  { hand: "To par", payout: 3 },
-  { hand: "Par", payout: 2 },
-];
+import { payouts } from "../../utils/payouts";
+
 /**
- * Viser pokerhendene og premiene for hver hånd.
- * @returns tabellen med pokerhender og premier
+ * Viser pokerhendene og hvor mange ganger innsatsen de gir i premie.
  */
 export default function PayoutTable() {
   return (
@@ -25,10 +14,10 @@ export default function PayoutTable() {
       </thead>
 
       <tbody>
-        {payouts.map((payout) => (
-          <tr key={payout.hand}>
-            <td>{payout.hand}</td>
-            <td>{payout.payout} × innsats</td>
+        {Object.entries(payouts).map(([hand, payouts]) => (
+          <tr key={hand}>
+            <td>{hand}</td>
+            <td>{payouts} × innsats</td>
           </tr>
         ))}
       </tbody>
