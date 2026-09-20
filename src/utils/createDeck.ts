@@ -1,7 +1,6 @@
 import type { PlayingCard, Suit, CardValue } from "../types/PlayingCard";
-
+// Kortsortene og verdiene som brukes til å lage kortstokken
 const suits: Suit[] = ["hearts", "diamonds", "clubs", "spades"];
-
 const values: CardValue[] = [
   "2",
   "3",
