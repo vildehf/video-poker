@@ -1,7 +1,7 @@
 import type { PlayingCard } from "../types/PlayingCard";
 import type { PokerHand } from "../types/PokerHand";
 
-const CardValue = [
+const cardValues = [
   "2",
   "3",
   "4",
@@ -39,7 +39,7 @@ export default function checkPokerHand(cards: PlayingCard[]): PokerHand {
   const isFlush = cards.every((card) => card.suit === cards[0].suit);
 
   const positions = cards
-    .map((card) => CardValue.indexOf(card.value))
+    .map((card) => cardValues.indexOf(card.value))
     .sort((a, b) => a - b);
 
   // Ess kan også brukes som laveste i A-2-3-4-5.

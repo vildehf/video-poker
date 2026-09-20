@@ -31,9 +31,9 @@ Appen har egne sider for spillet, regler og spillere.
 
 - `src/components`: spillbrett og gjenbrukbare komponenter.
 - `src/pages`: de tre sidene i appen.
-- `src/store`: spilltilstand og handlinger i Zustand.
+- `src/store`: én Zustand-store, delt i spillerlogikk og spillogikk med egne store-typer.
 - `src/types`: TypeScript-typer.
-- `src/utils`: kortstokk, stokking, håndberegning og premier.
+- `src/utils`: funksjoner for kortstokk, stokking, nye runder, kortbytte, håndberegning og premier.
 
 ## Kontroller
 
