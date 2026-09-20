@@ -14,6 +14,6 @@ Håndberegningen krevde at pokerhendene ble sjekket fra sterkest til svakest, og
 
 ## Valg jeg har tatt
 
-Jeg delte prosjektet i sider, komponenter, hjelpefunksjoner og typer. Spilltilstanden og handlingene ble samlet i Zustand, med persist for lagring ved reload. Spillerne fikk unike ID-er, og premiene ble samlet ett sted for å unngå duplisering.
+Jeg delte prosjektet i sider, komponenter, hjelpefunksjoner og typer. Spilltilstanden ligger i en Zustand-store, men spillerlogikk og spillogikk er delt i egne filer for å holde koden oversiktlig. Jeg brukte persist for lagring ved reload. Spillerne fikk unike ID-er, og premiene ble samlet ett sted for å unngå duplisering.
 
 Kortene bruker CSS Grid og CSS Modules. Jeg valgte en Card-component med en back-prop for både forside og bakside, fordi de deler mye styling og representerer samme type element.

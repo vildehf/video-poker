@@ -22,16 +22,5 @@ const values: CardValue[] = [
  * @returns en array med 52 PlayingCard-kort
  */
 export default function createDeck(): PlayingCard[] {
-  const deck: PlayingCard[] = [];
-
-  suits.forEach((suit) => {
-    values.forEach((value) => {
-      deck.push({
-        suit,
-        value,
-      });
-    });
-  });
-
-  return deck;
+  return suits.flatMap((suit) => values.map((value) => ({ suit, value })));
 }

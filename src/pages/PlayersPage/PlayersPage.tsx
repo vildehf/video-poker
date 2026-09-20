@@ -1,5 +1,5 @@
 import styles from "./PlayersPage.module.css";
-import { useGameStore } from "../../store/useGameStore";
+import { useGameStore, isRoundActive } from "../../store/useGameStore";
 
 /**
  * Viser spillerlisten og lar brukeren opprette, velge og slette spillere.
@@ -7,6 +7,7 @@ import { useGameStore } from "../../store/useGameStore";
 export default function PlayersPage() {
   const players = useGameStore((state) => state.players);
   const currentPlayer = useGameStore((state) => state.currentPlayer);
+  const roundActive = useGameStore(isRoundActive);
   const setCurrentPlayer = useGameStore((state) => state.setCurrentPlayer);
   const addPlayer = useGameStore((state) => state.addPlayer);
   const deletePlayer = useGameStore((state) => state.deletePlayer);
@@ -37,6 +38,12 @@ export default function PlayersPage() {
       </form>
 
       <h2>Spillere</h2>
+      {roundActive && (
+        <p>
+          Fullfør runden på Spill-siden før du bytter eller sletter en aktiv
+          spiller.
+        </p>
+      )}
       <div className={styles.playerList}>
         {players.map((player) => (
           <div key={player.id} className={styles.playerItem}>
@@ -47,6 +54,7 @@ export default function PlayersPage() {
               }
               aria-pressed={currentPlayer?.id === player.id}
               onClick={() => setCurrentPlayer(player)}
+              disabled={roundActive}
             >
               {player.name} - {player.coins} coins
             </button>
@@ -56,6 +64,7 @@ export default function PlayersPage() {
               className={styles.deleteButton}
               aria-label={`Slett ${player.name}`}
               onClick={() => deletePlayer(player.id)}
+              disabled={roundActive && currentPlayer?.id === player.id}
             >
               Slett
             </button>

@@ -4,6 +4,10 @@ import RulesPage from "./pages/RulesPage/RulesPage";
 import PlayersPage from "./pages/PlayersPage/PlayersPage";
 import Header from "./components/Header/Header";
 
+/**
+ * Viser felles navigasjon og siden som samsvarer med adressen.
+ * @returns appens navigasjon og sideinnhold
+ */
 export default function App() {
   return (
     <>
