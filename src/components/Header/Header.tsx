@@ -2,8 +2,7 @@ import { NavLink } from "react-router";
 import styles from "./Header.module.css";
 
 /**
- * Viser navigasjonen mellom sidene i applikasjonen.
- * @returns header med navigasjonslenker
+ * Viser navigasjonen mellom sidene i applikasjon.
  */
 export default function Header() {
   return (

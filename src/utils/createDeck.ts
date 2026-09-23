@@ -1,4 +1,5 @@
 import type { PlayingCard, Suit, CardValue } from "../types/PlayingCard";
+
 // Kortsortene og verdiene som brukes til å lage kortstokken
 const suits: Suit[] = ["hearts", "diamonds", "clubs", "spades"];
 const values: CardValue[] = [
@@ -18,8 +19,7 @@ const values: CardValue[] = [
 ];
 
 /**
- * Lager en komplett kortstokk med 52 kort
- * @returns en array med 52 PlayingCard-kort
+ * Lager og returnerer en komplett kortstokk med 52 kort.
  */
 export default function createDeck(): PlayingCard[] {
   return suits.flatMap((suit) => values.map((value) => ({ suit, value })));

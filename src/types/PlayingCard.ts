@@ -1,5 +1,6 @@
 // De fire kortsortene
 export type Suit = "hearts" | "diamonds" | "clubs" | "spades";
+
 // Verdiene et spillkort kan ha
 export type CardValue =
   | "2"
@@ -15,6 +16,7 @@ export type CardValue =
   | "Q"
   | "K"
   | "A";
+
 // Beskriver hvordan et spillkort er bygget opp
 export type PlayingCard = {
   suit: Suit;

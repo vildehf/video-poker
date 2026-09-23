@@ -3,7 +3,6 @@ import styles from "./RulesPage.module.css";
 
 /**
  * Viser regler og premier for spillet.
- * @returns regelsiden
  */
 export default function RulesPage() {
   return (

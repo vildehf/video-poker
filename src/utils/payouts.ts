@@ -1,6 +1,8 @@
 import type { PokerHand } from "../types/PokerHand";
 
-/** Antall ganger innsatsen som utbetales for hver pokerhånd. */
+/**
+ * Antall ganger innsatsen som utbetales for hver pokerhånd.
+ */
 export const payouts: Record<PokerHand, number> = {
   "Royal Flush": 10,
   "Straight Flush": 9,

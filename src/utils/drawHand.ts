@@ -1,8 +1,8 @@
 import type { PlayingCard } from "../types/PlayingCard";
 
 /**
- * Bytter kort som ikke er holdt, uten å endre listene som sendes inn.
- * Tar imot hånden, gjenværende kortstokk og plassene til HOLD-kortene.
+ * Bytter ut kort som ikke er holdt.
+ * Tar imot hånden, kortstokken og plassene til HOLD-kortene.
  * Returnerer ny hånd, gjenværende kortstokk og kastede kort,
  * eller null dersom kortstokken ikke har nok kort.
  */

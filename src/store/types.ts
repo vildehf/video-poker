@@ -32,5 +32,7 @@ export type GameSlice = {
   decreaseBet: () => void;
   toggleHold: (index: number) => void;
 };
-/**Den samlede store inneholder både spillerdata og spillrunden.*/
+/**
+ * Den samlede store inneholder både spillerdata og spillrunden.
+ */
 export type GameStore = PlayerSlice & GameSlice;
