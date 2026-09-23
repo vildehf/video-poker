@@ -44,6 +44,7 @@ export default function PlayersPage() {
           spiller.
         </p>
       )}
+
       <div className={styles.playerList}>
         {players.map((player) => (
           <div key={player.id} className={styles.playerItem}>
@@ -71,6 +72,7 @@ export default function PlayersPage() {
           </div>
         ))}
       </div>
+
       {currentPlayer && <p>Valgt spiller: {currentPlayer.name} </p>}
     </main>
   );

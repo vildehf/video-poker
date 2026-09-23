@@ -1,7 +1,7 @@
 import { payouts } from "../../utils/payouts";
 
 /**
- * Viser pokerhendene og hvor mange ganger innsatsen de gir i premie.
+ * Viser pokerhendene og utbetalingen for hver hånd.
  */
 export default function PayoutTable() {
   return (
@@ -9,15 +9,15 @@ export default function PayoutTable() {
       <thead>
         <tr>
           <th>Hånd</th>
-          <th>Premie</th>
+          <th>Utbetaling</th>
         </tr>
       </thead>
 
       <tbody>
-        {Object.entries(payouts).map(([hand, payouts]) => (
+        {Object.entries(payouts).map(([hand, payout]) => (
           <tr key={hand}>
             <td>{hand}</td>
-            <td>{payouts} × innsats</td>
+            <td>{payout} × innsats</td>
           </tr>
         ))}
       </tbody>

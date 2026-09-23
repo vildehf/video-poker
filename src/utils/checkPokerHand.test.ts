@@ -5,7 +5,7 @@ import type { CardValue, PlayingCard } from "../types/PlayingCard.ts";
 import type { PokerHand } from "../types/PokerHand.ts";
 
 /**
- * Lager fem testkort fra oppgitte verdier.
+ * Lager en testhånd for oppgitte kortverdier.
  * sameSuit bestemmer om alle kortene får samme sort.
  */
 function makeHand(values: CardValue[], sameSuit = false): PlayingCard[] {

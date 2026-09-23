@@ -105,6 +105,9 @@ export const createGameSlice: StateCreator<GameStore, [], [], GameSlice> = (
     });
   },
 
+  /**
+   * Oppretter en ny runde etter at trekket er fullført.
+   */
   startNewRound: () => {
     set((state) => {
       if (!state.hasDrawn) return state;
@@ -112,8 +115,10 @@ export const createGameSlice: StateCreator<GameStore, [], [], GameSlice> = (
       return createRound();
     });
   },
-  //**
-  // Oppretter første runde dersom ingen hånd finnes */
+
+  /**
+   * Oppretter første runde dersom ingen hånd finnes
+   */
   startGame: () => {
     set((state) => {
       if (state.hand.length > 0) return state;

@@ -1,7 +1,7 @@
-import type { PlayingCard } from "../types/PlayingCard";
+import type { PlayingCard, CardValue } from "../types/PlayingCard";
 import type { PokerHand } from "../types/PokerHand";
 
-const cardValues = [
+const cardValues: CardValue[] = [
   "2",
   "3",
   "4",

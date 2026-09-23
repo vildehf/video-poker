@@ -23,7 +23,9 @@ export const createPlayerSlice: StateCreator<GameStore, [], [], PlayerSlice> = (
   players: [],
   currentPlayer: null,
 
-  /** Oppretter en spiller med oppgitt navn, unik ID og 100 mynter. */
+  /**
+   * Oppretter en spiller med oppgitt navn, unik ID og 100 mynter.
+   */
   addPlayer: (name) => {
     const trimmedName = name.trim();
     if (!trimmedName) return;
@@ -39,7 +41,9 @@ export const createPlayerSlice: StateCreator<GameStore, [], [], PlayerSlice> = (
     }));
   },
 
-  /** Sletter spilleren med oppgitt ID, med mindre den spiller en runde. */
+  /**
+   *  Sletter spilleren med oppgitt ID, med mindre den spiller en runde.
+   */
   deletePlayer: (id) => {
     set((state) => {
       const isCurrentPlayer = state.currentPlayer?.id === id;
@@ -53,7 +57,9 @@ export const createPlayerSlice: StateCreator<GameStore, [], [], PlayerSlice> = (
     });
   },
 
-  /** Velger aktiv spiller, eller null, når ingen spillbar runde pågår. */
+  /**
+   *  Velger aktiv spiller, eller null, når ingen spillbar runde pågår.
+   */
   setCurrentPlayer: (player) => {
     set((state) => {
       if (isRoundActive(state)) return state;
