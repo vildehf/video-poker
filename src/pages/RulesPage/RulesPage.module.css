@@ -5,17 +5,18 @@
   color: white;
 
   p {
+    width: 100%;
     max-width: 650px;
     padding: 1rem;
     margin: 0;
-    background-color: #083d24;
+    background-color: #12613d;
     border-radius: 8px;
   }
 
   table {
     border-collapse: collapse;
     background-color: white;
-    color: black;
+    color: #083d24;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -28,7 +29,7 @@
     }
 
     th {
-      background-color: #083d24;
+      background-color: #12613d;
       color: white;
     }
   }
