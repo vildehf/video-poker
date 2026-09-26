@@ -16,7 +16,8 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100svh;
-  background: linear-gradient(135deg, #356f52, #285e43);
+  /*background: linear-gradient(135deg, #356f52, #285e43);*/
+  background-color: #083d24;
 }
 
 h1,

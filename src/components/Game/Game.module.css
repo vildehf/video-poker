@@ -5,7 +5,7 @@
   align-items: center;
   padding: 1rem;
   border-radius: 10px;
-  background-color: #083d24;
+  background-color: #12613d;
   color: white;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
 
@@ -89,13 +89,31 @@
 }
 
 .gameButton {
-  background-color: #083d24;
+  background-color: #12613d;
   color: white;
 }
 
 @media (max-width: 600px) {
+  .gameArea {
+    grid-template-columns: 1fr;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .deck {
+    grid-column: 1;
+    justify-self: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
   .hand {
+    grid-column: 1;
     gap: 0.5rem;
+  }
+
+  .gameActions {
+    grid-column: 1;
   }
 
   .gameInfo {
