@@ -41,6 +41,7 @@ export default function Game() {
         <CurrentBet bet={currentBet} />
         <HandResult hand={pokerHand} />
         <button
+          type="button"
           onClick={increaseBet}
           disabled={
             !currentPlayer ||
@@ -52,6 +53,7 @@ export default function Game() {
         </button>
 
         <button
+          type="button"
           onClick={decreaseBet}
           disabled={!currentPlayer || hasDrawn || currentBet <= 1}
         >
@@ -81,6 +83,7 @@ export default function Game() {
 
       <div className={styles.gameActions}>
         <button
+          type="button"
           className={styles.gameButton}
           onClick={dealNewHand}
           disabled={
@@ -91,9 +94,10 @@ export default function Game() {
         </button>
 
         <button
+          type="button"
           className={styles.gameButton}
           onClick={startNewRound}
-          disabled={!hasDrawn}
+          disabled={!currentPlayer || !hasDrawn}
         >
           Ny runde
         </button>

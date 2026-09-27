@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import checkPokerHand from "./checkPokerHand.ts";
+import checkPokerHand from "../utils/checkPokerHand.ts";
 import type { CardValue, PlayingCard } from "../types/PlayingCard.ts";
 import type { PokerHand } from "../types/PokerHand.ts";
 

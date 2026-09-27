@@ -110,7 +110,7 @@ export const createGameSlice: StateCreator<GameStore, [], [], GameSlice> = (
    */
   startNewRound: () => {
     set((state) => {
-      if (!state.hasDrawn) return state;
+      if (!state.currentPlayer || !state.hasDrawn) return state;
 
       return createRound();
     });
