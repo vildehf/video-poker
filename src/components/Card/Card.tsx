@@ -1,4 +1,4 @@
-import type { PlayingCard } from "../../types/PlayingCard";
+import type { PlayingCard, Suit } from "../../types/PlayingCard";
 import styles from "./Card.module.css";
 
 type CardProps = {
@@ -7,6 +7,13 @@ type CardProps = {
   held?: boolean;
   back?: boolean;
   disabled?: boolean;
+};
+
+const suitNames: Record<Suit, string> = {
+  hearts: "hjerter",
+  diamonds: "ruter",
+  clubs: "kløver",
+  spades: "spar",
 };
 
 /**
@@ -63,6 +70,7 @@ export default function Card({
       onClick={onClick}
       disabled={disabled}
       aria-pressed={held}
+      aria-label={`${card.value} ${suitNames[card.suit]}`}
     >
       <div className={styles.top}>
         <span>{card.value}</span>
